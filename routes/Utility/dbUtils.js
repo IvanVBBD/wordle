@@ -1,4 +1,4 @@
-const sql = require('mssql');
+const sql = require('msnodesqlv8');
 const fs = require('fs');
 const path = require("path")
 
@@ -6,19 +6,16 @@ const config = JSON.parse(fs.readFileSync(path.join(__dirname,"../../configs/con
 
 
 
-async function executeQuery(query){
-    console.log("Config file: " + config)
-    try {
-        await sql.connect(config.database.toString());
-        sql.connect()
-        const result = await sql.query(query);
-        console.log(result.recordset);
-        return result;
-      } catch (err) {
-        console.error(err);
-      } finally {
-        sql.close();
-      }
+async function executeQuery(query) {
+  sql.query(config.database.toString(), query, (err, results) => {
+    if (err) {
+      console.error('Error querying the database:', err);
+      return;
+    }
+
+    console.log(results);
+  });
 }
+
 
 module.exports = {executeQuery};
