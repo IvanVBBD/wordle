@@ -1,0 +1,17 @@
+{
+    "server": {
+      "port": 3000
+    },
+    "database": {
+      "host": "IVANV\\SQLEXPRESS",
+      "user": "",
+      "password": "",
+      "database": ""
+    },
+    "google": {
+      "clientID": "1014783924932-cvq26bk7cd6dfmjepflgm5f5h7jjpej6.apps.googleusercontent.com",
+      "clientSecret": "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",
+      "callbackURL": "http://localhost:3000/auth/google/callback"
+    }
+  }
+  
