@@ -1,5 +1,6 @@
 
 const express = require('express')
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const gameRoute = require("./routes/gameRoute");
 const authRoute = require("./routes/authRoute")
@@ -33,6 +34,8 @@ passport.serializeUser(function(user, cb) {
   passport.deserializeUser(function(obj, cb) {
     cb(null, obj);
   });
+
+app.use(bodyParser.json());
 
 app.use(session({
     secret: 'KEKW2017',

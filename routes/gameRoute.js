@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("./Utility/authUtils")
 const word = require("./Utility/wordUtils")
 const path = require("path");
+const gameUtils = require("./Utility/gameUtils")
 const gameRouter = express.Router();
 
 //auth.isLoggedIn,
@@ -19,6 +20,14 @@ gameRouter.get("/", async function (req, res) {
 gameRouter.get("/GetChallenge",async function(req,res) {
     let currentWord = await word.getActiveEvent()
     res.send(currentWord);
+})
+
+gameRouter.post("/SaveGame", async function(req,res) {
+    const data = req.body;
+    gameUtils.SaveGame(data.score, data.email);
+    console.log(data);
+    res.json({ message: 'Successful', data });
+    res.statusCode = 201;
 })
 
 module.exports = gameRouter;
