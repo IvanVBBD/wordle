@@ -6,15 +6,24 @@ const config = JSON.parse(fs.readFileSync(path.join(__dirname,"../../configs/con
 
 
 
-async function executeQuery(query) {
-  sql.query(config.database.toString(), query, (err, results) => {
-    if (err) {
-      console.error('Error querying the database:', err);
-      return;
-    }
-
-    console.log(results);
-  });
+async function executeQuery(sqlQuery) {
+  try{
+    let result = await new Promise((resolve, reject) => {
+      const query = sql.query(config.database.toString(), sqlQuery, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+      query.on('error', (err) => {
+        reject(err);
+      });
+    });
+    return result
+  }catch(e){
+    console.log(e)
+  }
 }
 
 
