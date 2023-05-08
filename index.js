@@ -44,7 +44,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//setInterval(word.getWord(),8.64e+7)
+//setInterval(word.createNewEvent,8.64*10^7)
 
 app.use(cors()) 
 
