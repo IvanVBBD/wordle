@@ -1,8 +1,10 @@
 
 const express = require('express')
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const gameRoute = require("./routes/gameRoute");
 const authRoute = require("./routes/authRoute")
+const word = require("./routes/Utility/wordUtils")
 const session = require('express-session');
 const fs = require('fs');
 const path = require("path")
@@ -33,6 +35,8 @@ passport.serializeUser(function(user, cb) {
     cb(null, obj);
   });
 
+app.use(bodyParser.json());
+
 app.use(session({
     secret: 'KEKW2017',
     resave: false,
@@ -42,6 +46,8 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+//setInterval(word.createNewEvent,8.64*10^7)
 
 app.use(cors()) 
 
