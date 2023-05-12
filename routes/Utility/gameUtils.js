@@ -1,7 +1,6 @@
 const word = require('./wordUtils');
 const DB = require('./dbUtils');
 
-
 async function SaveGame(score,email){
   try {
     await word.getActiveEvent();
@@ -18,4 +17,16 @@ async function SaveGame(score,email){
 
 }
 
-module.exports = {SaveGame};
+async function HighScores(){
+  try{
+    console.log();
+  }
+  catch (err){
+    console.log();
+  }
+}
+
+module.exports = {
+  SaveGame,
+  HighScores
+};

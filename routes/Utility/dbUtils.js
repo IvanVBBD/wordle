@@ -1,10 +1,10 @@
 const sql = require('msnodesqlv8');
-const { configManger } = require('../../globalUtils/index');
+const configManger = require('../../globalUtils/configManager');
 
 async function executeQuery(sqlQuery) {
   try{
     let result = await new Promise((resolve, reject) => {
-      const query = sql.query(configManger.readConfig('database'), sqlQuery, (err, results) => {
+      const query = sql.query(configManger.get('database'), sqlQuery, (err, results) => {
         if (err) {
           reject(err);
         } else {

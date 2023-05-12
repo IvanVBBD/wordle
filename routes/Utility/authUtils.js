@@ -1,7 +1,4 @@
-
 const DB = require('./dbUtils');
-
-
 
 async function checkUserProfile(email){
   try{
@@ -15,8 +12,7 @@ async function checkUserProfile(email){
     }
   }catch(e){
     console.log('ooops user error occured: ' + e);
-  }
-   
+  }   
 }
 
 const isLoggedIn = (req, res, next) => {
