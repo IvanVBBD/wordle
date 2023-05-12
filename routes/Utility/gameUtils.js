@@ -18,4 +18,10 @@ async function SaveGame(score,email){
 
 }
 
+async function HighScores(){
+    try{
+        
+    }
+}
+
 module.exports = {SaveGame};

@@ -19,6 +19,8 @@ gameRouter.get("/", async function (req, res) {
 
 gameRouter.get("/GetChallenge",async function(req,res) {
     let currentWord = await word.getActiveEvent()
+    console.log("------Current word-------")
+    console.log(currentWord);
     res.send(currentWord);
 })
 

@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const gameRoute = require("./routes/gameRoute");
 const authRoute = require("./routes/authRoute")
-const word = require("./routes/Utility/wordUtils")
 const session = require('express-session');
 const fs = require('fs');
 const path = require("path")
 const passport = require('passport');
+const highscoreRoute = require('./routes/highScoreUtils');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express()
 const port = process.env.PORT || 3000
@@ -58,6 +58,7 @@ app.get('/', (req, res) => {
 app.use(express.static('scripts'));
 app.use("/Game",gameRoute)
 app.use("/Auth",authRoute)
+app.use("/Highscore",highscoreRoute)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
