@@ -22,6 +22,9 @@ async function HighScores(){
     try{
         
     }
+    catch (err){
+
+    }
 }
 
 module.exports = {SaveGame};

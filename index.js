@@ -56,6 +56,8 @@ app.get('/', (req, res) => {
 })
 
 app.use(express.static('scripts'));
+app.use(express.static('styles'));
+app.use(express.static('resources'));
 app.use("/Game",gameRoute)
 app.use("/Auth",authRoute)
 app.use("/Highscore",highscoreRoute)
