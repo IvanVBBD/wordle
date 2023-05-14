@@ -1,5 +1,5 @@
-const login = document.getElementById("logIn");
+const login = document.getElementById('logIn');
 
-login.addEventListener("click", ()=>{
-    window.location.href = '/Auth/google';
-})
+login.addEventListener('click', ()=>{
+  window.location.href = '/Auth/google';
+});

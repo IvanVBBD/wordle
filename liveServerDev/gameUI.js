@@ -65,10 +65,10 @@ function colorToggleClick(){
   });
 
   rootVars.style.setProperty(UIState.icons.themeIcon.iconVar,(compState.colorStateLight)?UIState.icons.themeIcon.lightMode:UIState.icons.themeIcon.darkMode);
-  rootVars.style.setProperty( UIState.soundOnIcon.iconVar,
-    (compState.colorStateLight)?
-      (UIState.):UIState.icons.themeIcon.darkMode
-  );
+  // rootVars.style.setProperty( UIState.soundOnIcon.iconVar,
+  //   (compState.colorStateLight)?
+  //     (UIState.):UIState.icons.themeIcon.darkMode
+  // );
 }
 
 export function activateUI(){
