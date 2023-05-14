@@ -7,7 +7,7 @@
 }
 
 body{
-  background-color: #232323;
+  background-color: var(--plainBackground);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,6 +15,7 @@ body{
 }
 
 :root{
+  --plainBackground: #232323;
   --bigBackground: #F2F8F8;
   --buttonFontColor:white;
   --completeCorrect: #53e485;
@@ -28,6 +29,7 @@ body{
   --backButtonBC:#95CACA;
   --timerFontColor: #343434;
   --emptyInputBGColor: #C4CED8;
+  --defaultButtonBGColor: #C4CED8;
 }
 
 .round{

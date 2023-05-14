@@ -1,6 +1,7 @@
 import UIStateManager from './UIStateManager.js';
 import * as UIHelpers from './UIHelpers.js';
 import { UIConstants,UIIDList } from './gameUIConstants.js';
+import genKeyboard from './keyboardGenerator.js';
 
 const compDataState = { //Game data state being display and what is used for logic
   colorStateLight:true,
@@ -28,6 +29,11 @@ function updateLogo(LogoURL){
   rootVars.style.setProperty(UIConstants.logo.logoVar,LogoURL);
 }
 
+function updateThemeIcon(ThemeIconURL){
+  let rootVars = document.querySelector(':root');
+  rootVars.style.setProperty(UIConstants.icons.themeIcon.iconVar,ThemeIconURL);
+}
+
 //Create UIStateManager instance for this page
 const gameUIManager = new UIStateManager();
 
@@ -38,6 +44,10 @@ gameUIManager.addListenerToUIUpdate(UIIDList.gameColorPallet,updateColorPalletFr
 // Figure it out your smart enough
 gameUIManager.addUIState(UIIDList.logo,UIConstants.logo.lightMode);
 gameUIManager.addListenerToUIUpdate(UIIDList.logo,updateLogo );
+
+// Figure it out your smart enough
+gameUIManager.addUIState(UIIDList.colorToggle,UIConstants.logo.lightMode);
+gameUIManager.addListenerToUIUpdate(UIIDList.colorToggle,updateThemeIcon );
 
 // Method which is triggered on the onclick event of the theme icon click
 function onThemeSwitchClick(){
@@ -50,6 +60,9 @@ function onThemeSwitchClick(){
 
   const logoURL = (compDataState.colorStateLight)? UIConstants.logo.lightMode: UIConstants.logo.darkMode;
   gameUIManager.updateUIState(UIIDList.logo,logoURL);
+
+  const themeIcon = (compDataState.colorStateLight)? UIConstants.icons.themeIcon.lightMode: UIConstants.icons.themeIcon.darkMode;
+  gameUIManager.updateUIState(UIIDList.colorToggle,themeIcon);
 }
 
 // Utility method to calculate and update the timer UI Component
@@ -62,29 +75,36 @@ function calculateGameTimePass(){
 
   const currentTime = new Date(Math.abs(new Date() - compDataState.startTime))  ;
   const time = `${makeTwo(currentTime.getMinutes())}:${makeTwo(currentTime.getSeconds()) }` ;
-  UIEventTree[UIIDList.timeCount].innerText = time;  
+  UITree[UIIDList.timeCount].innerText = time;  
 }
 
 //Object used to store all used components which have methods subscribed to events on them
-const UIEventTree = {};
+const UITree = {};
 
 /**
- * Loads DOM elements with corresponding events and methods into the UIEventTree;
+ * Loads DOM elements with corresponding events and methods into the UITree;
  */
 export function activateUI(){
   //Adds finds and adds methods as subscribers to the given domElement
   const reactiveComponentList = [
     new UIHelpers.DOD(UIIDList.colorToggle, undefined, 'click',onThemeSwitchClick),
   ];
-  UIHelpers.locateAndMount(UIEventTree,reactiveComponentList);
+  UIHelpers.locateAndMount(UITree,reactiveComponentList);
 
-  //Finds and adds DOM element to UIEventTree, not there is not events listening.
+  //Finds and adds DOM element to UITree, not there is not events listening.
   const liveComponentList = [
     new UIHelpers.DOD(UIIDList.timeCount),
+    new UIHelpers.DOD(UIIDList.keyboardContainer),
   ];
 
-  UIHelpers.locateUI(UIEventTree,liveComponentList);
+  UIHelpers.locateUI(UITree,liveComponentList);
 
   calculateGameTimePass();
   setInterval(calculateGameTimePass,1000);
+
+  genKeyboard(UITree.keyboardContainer,(x)=>{
+    alert(x);
+  },UITree,()=>{
+    alert('back Clicked');
+  });
 }

@@ -8,12 +8,13 @@
 	<link rel="stylesheet" href="allStyles.css">
 	<!-- <script src="gameUI.js" type="module" defer></script> -->
 	<script src="gameMain.js" type="module" defer></script>
+	<script src="keyboardKey.js" defer></script>
 </head>
 <body>
 	<div id="mainHolder" class="smallRound">
 		<h1>
 		</h1>
-		<button class="functionButtons" type="button" id="colorToggle">
+		<button class="functionButtons iconButton" type="button" id="colorToggle">
 		</button>
 		<label for="" id="timeCount">{DisplayTimeCount}</label>
 		<section id="displayBoard">
@@ -43,6 +44,9 @@
 			<div class="gridItem smallRound"></div>
 			<div class="gridItem smallRound"></div>
  		</section>
+		<button id="enterButton" class="round">Enter</button>
+		<section id="keyboardContainer">
+		</section>
 		<!-- <input class="functionButtons" type="button" id="colorToggle"> -->
 	</div>
 </body>

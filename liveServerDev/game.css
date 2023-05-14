@@ -1,7 +1,8 @@
 :root {
   --colorToggleSVG: url("lightModeIcon.svg");
   --soundToggleSVG: url("soundOn.svg");
-  --wordleLogo: url("wordleLogoLightMode.svg")
+  --wordleLogo: url("wordleLogoLightMode.svg");
+  --backspaceIcon: url("backspaceIconLightMode.svg");
 }
 
 body{
@@ -11,9 +12,9 @@ body{
 
 #mainHolder {
   background-color: var(--bigBackground);
-  aspect-ratio: 0.55;
+  aspect-ratio: 0.5;
   display: grid;
-  grid-template-rows: 2fr 1fr 7fr 1fr 3fr;
+  grid-template-rows: 2fr 1fr 7fr 1.5fr 4fr;
   margin: 1vw;
   grid-template-columns: 2fr 8fr 2fr; 
 }
@@ -30,13 +31,18 @@ h1 {
 }
 
 .functionButtons {
+
+  width: 100%;
+  height: 100%;
+
+}
+
+.iconButton{
+  border: none;
   background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 75% 75%;
-  width: 100%;
-  height: 100%;
-  border: none;
 }
 
 #colorToggle {
@@ -76,20 +82,77 @@ h1 {
   height: 100%;
 }
 
-@media only screen and (max-width: 600px) {
+#enterButton{
+  grid-column: 1/4;
+  grid-row: 4;
+  margin: 1.5vh 3vw;
+  background-color: var(--enterBackground);
+  color: var(--buttonFontColor);
+  border: none;
+  font-size: 1.2rem;
+}
+
+#keyboardContainer{
+  display: flex;
+  grid-row: 5;
+  grid-column: 1/4;
+  flex-direction: column;
+  gap: 3%;
+}
+
+.keyRow{
+  display: flex;
+  width: 100%;
+  height: 25%;
+  justify-content: center;
+  gap: 1.5%;
+}
+
+#buttonBackSpace{
+  background-image: var(--backspaceIcon);
+  background-color: var(--backButtonBC);
+  padding: 0 3%;
+}
+
+key-button{
+  display: flex;
+
+  background-color: var(--defaultButtonBGColor);
+  align-items: center;
+  justify-content: center;
+  color: var(--defaultFont);
+  width: 8%;
+
+  font-size: 2rem;
+  border-radius: 0.75vh;
+}
+
+ @media only screen and (max-width: 600px) {
+
   #mainHolder {
     width: 95vw;
   }
+
   #displayBoard{
     gap: 2vw;
+  }
+  
+  #timeCount{
+    font-size: 1.5rem;
   }
 }
 
 @media only screen and (min-width: 600px) {
+
   #mainHolder {
     height: 95vh;
   }
+
   #displayBoard{
-    gap: 1vh;
+    gap: 0.5vw;
+  }
+  
+  #timeCount{
+    font-size: 1.5rem;
   }
 }

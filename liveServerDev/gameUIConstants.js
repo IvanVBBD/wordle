@@ -14,7 +14,8 @@ const UIConstants = {
     ['--svgColor', 'black' ],
     ['--backButtonBC', '#95CACA'],
     ['--timerFontColor', '#343434'],
-    ['--emptyInputBGColor', '#C4CED8']
+    ['--emptyInputBGColor', '#C4CED8'],
+    ['--defaultButtonBGColor', '#C4CED8']
   ],
   darkColorPallet:[
     ['--bigBackground', '#0C1818'],
@@ -24,11 +25,12 @@ const UIConstants = {
     ['--wrong', 'black'],
     ['--wrongFontColor','black'],
     ['--enterBackground','black'],
-    ['--defaultFont','black'],
+    ['--defaultFont','white'],
     ['--svgColor', 'white' ],
-    ['--backButtonBC', '#95CACA'],
+    ['--enterBackground','#639999'],
     ['--timerFontColor', '#639999'],
-    ['--emptyInputBGColor', '#6B7378']
+    ['--emptyInputBGColor', '#6B7378'],
+    ['--defaultButtonBGColor', '#90959F']
 
   ],
   icons:{
@@ -36,13 +38,23 @@ const UIConstants = {
       iconVar: '--colorToggleSVG',
       darkMode: 'url("darkModeIcon.svg")',
       lightMode: 'url("lightModeIcon.svg")'
+    },
+    backspaceIcon:{
+      iconVar: '--backspaceIcon',
+      lightMode: 'url("backspaceIconLightMode.svg")',
+      darkMode: ''
     }
   },
   logo:{
     logoVar: '--wordleLogo',
     lightMode: 'url(wordleLogoLightMode.svg)',
     darkMode: 'url(wordleLogoDarkMode.svg)',
-  }
+  },
+  keyboardLayout:[
+    'QWERTYUIOP',
+    'ASDFGHJKL',
+    'ZXCVBNM'
+  ]
 };
 
 /**
@@ -52,7 +64,10 @@ const UIIDList ={
   gameColorPallet: 'GameColorPallet',
   timeCount: 'timeCount',
   colorToggle: 'colorToggle',
-  logo: 'logo'
+  logo: 'logo',
+  displayBoard: 'displayBoard',
+  keyboardContainer: 'keyboardContainer',
+  buttonBackSpace: 'buttonBackSpace'
 };
 
 export {UIConstants, UIIDList};
