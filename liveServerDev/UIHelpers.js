@@ -24,7 +24,7 @@ export function locateUI(UITree, DODList){
   DODList.forEach(Dod => {
     UITree[Dod.getID()] =document.getElementById(`${Dod.getID()}`);
     if (!UITree[Dod.getID()]){
-      console.log(`${Dod.getAlias()} was not found by the ID: ${Dod.getID()}`)
+      console.log(`${Dod.getAlias()} was not found by the ID: ${Dod.getID()}`);
     }
   });
 }
@@ -38,7 +38,7 @@ export function locateAndMount(UITree, DODList){
   DODList.forEach(Dod => {
     UITree[Dod.getID()] =document.getElementById(`${Dod.getID()}`);
     if (!UITree[Dod.getID()]){
-      console.log(`${Dod.getAlias()} was not found by the ID: ${Dod.getID()} and thus could not mount event`)
+      console.log(`${Dod.getAlias()} was not found by the ID: ${Dod.getID()} and thus could not mount event`);
       return;
     }
     if (Dod.isMountAble())
@@ -76,12 +76,12 @@ export class DOD{
   isMountAble(){
     if (!this.Event)
     {
-      console.log("Cannot mount object without event")
+      console.log('Cannot mount object without event');
       return false;
     }
     if (!this.Method)
     {
-      console.log("Cannot mount object without Method")
+      console.log('Cannot mount object without Method');
       return false;
     }
     return true;

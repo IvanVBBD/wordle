@@ -1,4 +1,4 @@
-import debugManager from "./debugLoggerUtils.js"
+import debugManager from './debugLoggerUtils.js';
 
 export class PubSubManager{
   static debugMode = debugManager.debugLevel.None; 
@@ -16,7 +16,7 @@ export class PubSubManager{
     if (this.publishedEvents[eventName])
     {
       debugManager.doLog(PubSubManager.debugMode, {successLog: 'Adding method To pre-existing list'});
-      this.publishedEvents.push(method)
+      this.publishedEvents.push(method);
       return;
     }
     debugManager.doLog(PubSubManager.debugMode, { successLog: 'Adding method To new list'});
@@ -42,10 +42,12 @@ export class PubSubManager{
 
   addEmptyPublish(eventName){
     if (this.publishedEvents[eventName])
-    debugManager.doLog(PubSubManager.debugMode,undefined,'Found event and unsubscribed method successfully');
     {
+      debugManager.doLog(PubSubManager.debugMode,{unsuccessLog: 'Found event and unsubscribed method successfully'});
       return;
     }
+    this.publishedEvents.push(eventName);
+    debugManager.doLog(PubSubManager.debugMode,{unsuccessLog: 'Found event and unsubscribed method successfully'});
   }
 
   /**
@@ -60,7 +62,7 @@ export class PubSubManager{
       const index = this.publishedEvents[eventName].indexOf(method);
       if (index >= 0)
       {
-      debugManager.doLog(PubSubManager.debugMode,'Found event and unsubscribed method successfully');
+        debugManager.doLog(PubSubManager.debugMode,'Found event and unsubscribed method successfully');
 
         this.publishedEvents[eventName].splice(index,1);
         return;
@@ -68,7 +70,6 @@ export class PubSubManager{
       debugManager.doLog(PubSubManager.debugMode,undefined,'Found event but could not find the method to unsubscribe');
       return;
     }
-    debugManager.doLog(PubSubManager.debugMode,);
-
+    debugManager.doLog(PubSubManager.debugMode,{unsuccessLog: `No event with the ID of ${eventName}`} );
   }
 }

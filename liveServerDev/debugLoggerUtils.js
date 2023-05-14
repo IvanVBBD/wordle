@@ -4,28 +4,28 @@ export default class debugManager{
     All:1,
     UnsuccessfulOnly:2,
     SuccessfulOnly:3
-  }
+  };
   static doLog(debugLevel,{successLog, unsuccessLog}){
     switch (debugLevel){
 
-      case debugLevel.None: break;
+    case debugLevel.None: break;
 
-      case debugLevel.All: {
-        if (successLog)
-          console.log(successLog)
-        if (unsuccessLog)
-          console.log(unsuccessLog)
-      }
-      break;
-
-      case debugLevel.SuccessfulOnly && successLog: {
+    case debugLevel.All: {
+      if (successLog)
         console.log(successLog);
-      }
+      if (unsuccessLog)
+        console.log(unsuccessLog);
+    }
       break;
 
-      case debugLevel.UnsuccessfulOnly && unsuccessLog: {
-        console.log(unsuccessLog);
-      }
+    case debugLevel.SuccessfulOnly && successLog: {
+      console.log(successLog);
+    }
+      break;
+
+    case debugLevel.UnsuccessfulOnly && unsuccessLog: {
+      console.log(unsuccessLog);
+    }
       break;
     }
   }
