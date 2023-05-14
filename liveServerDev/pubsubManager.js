@@ -1,5 +1,8 @@
 import debugManager from './debugLoggerUtils.js';
 
+/**
+ * This manages a publisher subscriber pattern for event listening and broadcasting
+ */
 export class PubSubManager{
   static debugMode = debugManager.debugLevel.None; 
   constructor(){
@@ -25,8 +28,9 @@ export class PubSubManager{
 
   /**
    * Publish a value to all subscribed events;
-   * @param {*} eventName broadcast ID
-   * @param {*} value value passed
+   * @param {string} eventName broadcast ID
+   * @param {any | Object} value value passed
+   * @returns If a publication is found even if it has no subscribers it will return true else false
    */
   publish(eventName,value){
     if (this.publishedEvents[eventName])
@@ -35,25 +39,33 @@ export class PubSubManager{
         subEvent(value);
       });
       debugManager.doLog(PubSubManager.debugMode,{successLog:`Broadcasting event to ${this.publishedEvents[eventName].length} listeners`});
-      return;
+      return true;
     }
     debugManager.doLog(PubSubManager.debugMode,undefined,`No broadcast group found for the event name of ${eventName}`);
+    return false;
   }
-
+  
+  /**
+   * Adds and emtpy publish entry.
+   * @param {string} eventName The name of the publication
+   * @returns if the event already exists returns false
+   */
   addEmptyPublish(eventName){
     if (this.publishedEvents[eventName])
     {
       debugManager.doLog(PubSubManager.debugMode,{unsuccessLog: 'Found event and unsubscribed method successfully'});
-      return;
+      return false;
     }
     this.publishedEvents.push(eventName);
     debugManager.doLog(PubSubManager.debugMode,{unsuccessLog: 'Found event and unsubscribed method successfully'});
+    return true;
   }
 
   /**
    * Unsubscribe method from subscriber list
-   * @param {*} eventName Broadcast name to search in
+   * @param {string} eventName Broadcast name to search in
    * @param {*} method the method to remove
+   * @returns returns true if the method was found in a subscriber list and removed. If the subscriber list or method could not be found returns false
    */
   unsubscribe(eventName,method){
     if (this.publishedEvents[eventName])
@@ -65,11 +77,12 @@ export class PubSubManager{
         debugManager.doLog(PubSubManager.debugMode,'Found event and unsubscribed method successfully');
 
         this.publishedEvents[eventName].splice(index,1);
-        return;
+        return true;
       }
       debugManager.doLog(PubSubManager.debugMode,undefined,'Found event but could not find the method to unsubscribe');
-      return;
+      return false;
     }
     debugManager.doLog(PubSubManager.debugMode,{unsuccessLog: `No event with the ID of ${eventName}`} );
+    return false;
   }
 }

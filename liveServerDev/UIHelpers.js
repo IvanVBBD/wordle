@@ -1,9 +1,9 @@
 /**
  * Adds an event to a DOMObject if it can be found in the Event Tree
- * @param {*} UITree Object containing all located DOM 
- * @param {*} ObjectID ObjectID which is the target in the UI Tree
- * @param {*} event Event to be subscribed to
- * @param {*} method The method to be added as the subscriber to the event
+ * @param {Object} UITree Object containing all located DOM 
+ * @param {String} ObjectID ObjectID which is the target in the UI Tree
+ * @param {String} event Event to be subscribed to
+ * @param { function } method The method to be added as the subscriber to the event
  * @returns Nothing
  */
 export function connectEventHandler(UITree, DO){
@@ -17,7 +17,7 @@ export function connectEventHandler(UITree, DO){
 
 /**
  * Searches and adds given IDAliases to the UITree
- * @param {*} UITree Object which holds the DOMObjects
+ * @param {Object} UITree Holds the DOMObjects
  * @param {DOD} UIIDAliasList DOM Object Data
  */
 export function locateUI(UITree, DODList){
@@ -31,8 +31,8 @@ export function locateUI(UITree, DODList){
 
 /**
  * Locates and mounts a list of DOM Objects onto the UI Tree with their events added
- * @param {*} UITree Object to contain all the UI elements
- * @param {*} DODList List of DOM Object Datas
+ * @param {Object} UITree Contains all the UI elements
+ * @param {Array} DODList List of DOM Object Datas
  */
 export function locateAndMount(UITree, DODList){
   DODList.forEach(Dod => {
@@ -48,6 +48,7 @@ export function locateAndMount(UITree, DODList){
 
 /**
  * Predefined grouping of information about a DOM Object Data
+ * Holds the DOM ID an alias for the dom ID an event to be listened for and a method to call on event triggering
  */
 export class DOD{
   constructor(ID,Alias,Event,Method){

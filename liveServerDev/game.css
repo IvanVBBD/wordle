@@ -1,20 +1,21 @@
 :root {
   --colorToggleSVG: url("lightModeIcon.svg");
   --soundToggleSVG: url("soundOn.svg");
+  --wordleLogo: url("wordleLogoLightMode.svg")
 }
 
 body{
   background-color: #232323;
+  color: var(--defaultFont);
 }
 
 #mainHolder {
   background-color: var(--bigBackground);
-  height: 80vh;
-  aspect-ratio: 0.5;
+  aspect-ratio: 0.55;
   display: grid;
-  grid-template-rows: 2fr 9fr 2fr;
-  margin: 10px;
-  grid-template-columns: 3fr 6fr 3fr;
+  grid-template-rows: 2fr 1fr 7fr 1fr 3fr;
+  margin: 1vw;
+  grid-template-columns: 2fr 8fr 2fr; 
 }
 
 h1 {
@@ -23,6 +24,9 @@ h1 {
   align-items: center;
   grid-column-start: 2;
   grid-column-end: 2;
+  background-image: var(--wordleLogo);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 .functionButtons {
@@ -42,14 +46,50 @@ h1 {
   background-image: var(--colorToggleSVG);
 }
 
-#soundToggle {
-  grid-column-start: 1;
-  grid-column-end: 1;
-  grid-row: 1;
-  background-image: var(--soundToggleSVG);
+#timeCount{
+  grid-column: 2;
+  grid-row: 2;
+  text-align: center;
+  color: var(--timerFontColor);
 }
 
-.pathLol{
-  fill: var(--svgColor);
-  stroke: cyan;
+#displayBoard{
+  display: grid;
+  width: 92%;
+  height: 100%;
+  grid-column: 1/4;
+  grid-row: 3;
+  margin: 0 4%;
+  gap: 1vw;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+}
+
+.smallRound{
+  border-radius: 2vh;
+}
+
+.gridItem{
+  display: block;
+  background-color: var(--emptyInputBGColor);
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  #mainHolder {
+    width: 95vw;
+  }
+  #displayBoard{
+    gap: 2vw;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  #mainHolder {
+    height: 95vh;
+  }
+  #displayBoard{
+    gap: 1vh;
+  }
 }
