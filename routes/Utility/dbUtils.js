@@ -1,15 +1,10 @@
 const sql = require('msnodesqlv8');
-const fs = require('fs');
-const path = require("path")
-
-const config = JSON.parse(fs.readFileSync(path.join(__dirname,"../../configs/config.json")))
-
-
+const configManger = require('../../globalUtils/configManager');
 
 async function executeQuery(sqlQuery) {
   try{
     let result = await new Promise((resolve, reject) => {
-      const query = sql.query(config.database.toString(), sqlQuery, (err, results) => {
+      const query = sql.query(configManger.get('database'), sqlQuery, (err, results) => {
         if (err) {
           reject(err);
         } else {
@@ -20,11 +15,10 @@ async function executeQuery(sqlQuery) {
         reject(err);
       });
     });
-    return result
+    return result;
   }catch(e){
-    console.log(e)
+    console.log(e);
   }
 }
-
 
 module.exports = {executeQuery};
