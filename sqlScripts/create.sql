@@ -46,4 +46,12 @@ INSERT INTO [dbo].[USERS]
 		   ('PogO@gamil.com')
 GO
 
+
+INSERT INTO [dbo].[EVENTS]([word],[active]) 
+            VALUES
+            ('JAMEL',1)
+
+
 SELECT * FROM USERS
+
+SELECT * FROM EVENTRESPONSES
