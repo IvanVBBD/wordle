@@ -2,6 +2,9 @@
  * object containing all UI State change information
  */
 const UIConstants = {
+  /**
+   * @type {[]string[]}
+   */
   lightColorPallet:[
     ['--bigBackground', '#F2F8F8'],
     ['--buttonFontColor','white'],
@@ -54,7 +57,8 @@ const UIConstants = {
     'QWERTYUIOP',
     'ASDFGHJKL',
     'ZXCVBNM'
-  ]
+  ],
+  gridSize:5
 };
 
 /**

@@ -2,6 +2,7 @@ import UIStateManager from './UIStateManager.js';
 import * as UIHelpers from './UIHelpers.js';
 import { UIConstants,UIIDList } from './gameUIConstants.js';
 import genKeyboard from './keyboardGenerator.js';
+import generateInputGrid from './generateInputGrid.js';
 
 const compDataState = { //Game data state being display and what is used for logic
   colorStateLight:true,
@@ -81,6 +82,11 @@ function calculateGameTimePass(){
 //Object used to store all used components which have methods subscribed to events on them
 const UITree = {};
 
+
+const activeGridInput = 0;
+function gridIndexToCord(){
+  return; 
+}
 /**
  * Loads DOM elements with corresponding events and methods into the UITree;
  */
@@ -107,4 +113,7 @@ export function activateUI(){
   },UITree,()=>{
     alert('back Clicked');
   });
+
+  UIHelpers.locateUI(UITree,[new UIHelpers.DOD(UIIDList.displayBoard)]);
+  generateInputGrid(UITree,gameUIManager,UITree[UIIDList.displayBoard]);
 }
