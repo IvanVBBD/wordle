@@ -16,7 +16,7 @@ body{
   display: grid;
   grid-template-rows: 2fr 1fr 7fr 1.5fr 4fr;
   margin: 1vw;
-  grid-template-columns: 2fr 8fr 2fr; 
+  grid-template-columns: 2fr 8fr 2fr;
 }
 
 h1 {
@@ -76,10 +76,12 @@ h1 {
 }
 
 .gridItem{
-  display: block;
+  display: flex;
   background-color: var(--emptyInputBGColor);
   width: 100%;
   height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 #enterButton{
@@ -134,12 +136,16 @@ key-button{
   #displayBoard{
     gap: 2vw;
   }
-  
+
   #timeCount{
     font-size: 1.5rem;
   }
 
   key-button{
+    font-size: 2rem;
+  }
+
+  .gridItem {
     font-size: 2rem;
   }
 }
@@ -153,12 +159,16 @@ key-button{
   #displayBoard{
     gap: 0.5vw;
   }
-  
+
   #timeCount{
     font-size: 1.5rem;
   }
 
   key-button{
     font-size: 1.5rem;
+  }
+
+  .gridItem {
+    font-size: 2rem;
   }
 }

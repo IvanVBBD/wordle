@@ -68,4 +68,17 @@ export default class UIStateManager{
     debugManager.doLog(UIStateManager.debugMode,{successLog:'Updated state and called called broadcasted updated'});
     return true;
   }
+
+  /**
+   * Gets the current held state for a given UIID
+   * @param {string} UIID
+   * @returns Either the state which could be anything or null;
+   */
+  getUIState(UIID){
+    if (!this.UIState[UIID]) {
+      debugManager.doLog(UIStateManager.debugMode, { unsuccessLog: `Failed to find UI element with ID: ${UIID}. Can't return state` });
+      return null;
+    }
+    return this.UIState[UIID];
+  }
 }

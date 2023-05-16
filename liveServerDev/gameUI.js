@@ -3,11 +3,13 @@ import * as UIHelpers from './UIHelpers.js';
 import { UIConstants,UIIDList } from './gameUIConstants.js';
 import genKeyboard from './keyboardGenerator.js';
 import generateInputGrid from './generateInputGrid.js';
+import { LetterNode } from './generateInputGrid.js'
 
 const compDataState = { //Game data state being display and what is used for logic
   colorStateLight:true,
   soundOn: false,
-  startTime: new Date()
+  startTime: new Date(),
+  activeGridInput: 0
 };
 
 /**
@@ -76,17 +78,47 @@ function calculateGameTimePass(){
 
   const currentTime = new Date(Math.abs(new Date() - compDataState.startTime))  ;
   const time = `${makeTwo(currentTime.getMinutes())}:${makeTwo(currentTime.getSeconds()) }` ;
-  UITree[UIIDList.timeCount].innerText = time;  
+  UITree[UIIDList.timeCount].innerText = time;
 }
 
 //Object used to store all used components which have methods subscribed to events on them
 const UITree = {};
 
-
-const activeGridInput = 0;
+/** @type {number} */
+/**
+ * convertes between an index and a coordinate
+ * @returns
+ */
 function gridIndexToCord(){
-  return; 
+  // Yes its X;Y;
+  return [compDataState.activeGridInput % UIConstants.gridSize, Math.floor(compDataState.activeGridInput / UIConstants.gridSize)];
 }
+
+function bumpGridIndex(enterClick){
+  if (enterClick)
+  {
+    compDataState.activeGridInput++;
+    return;
+  }
+  if (compDataState.activeGridInput == 0)
+  {
+    compDataState.activeGridInput++;
+    return
+  }
+  if (compDataState.activeGridInput % (UIConstants.gridSize-1) != 0)
+  {
+    compDataState.activeGridInput++;
+    return
+  }
+}
+
+function getInputString(){
+  const loc = gridIndexToCord();
+  for (let i= 0; i < UIConstants.gridSize;i++){
+
+  }
+}
+
 /**
  * Loads DOM elements with corresponding events and methods into the UITree;
  */
@@ -109,7 +141,19 @@ export function activateUI(){
   setInterval(calculateGameTimePass,1000);
 
   genKeyboard(UITree.keyboardContainer,(x)=>{
-    alert(x);
+
+    /** @type {number[]} */
+    const locate =gridIndexToCord();
+
+    /** @type {string} */
+    const accessUIID = `R${locate[1]}C${locate[0]}`;
+
+    /** @type { LetterNode }*/
+    const currentState = gameUIManager.getUIState(accessUIID)
+    currentState.letterValue = x;
+
+    gameUIManager.updateUIState(accessUIID, currentState);
+    bumpGridIndex(false);
   },UITree,()=>{
     alert('back Clicked');
   });
