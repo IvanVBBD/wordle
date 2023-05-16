@@ -8,7 +8,7 @@ async function SaveGame(duration,email){
     const eventIDQuery = 'SELECT event_id FROM EVENTS WHERE active = 1';
     let eventId = await DB.executeQuery(eventIDQuery);
     let userId = await DB.executeQuery(userIDQuery);
-    const insertQuery = 'INSERT INTO EVENTRESPONSES (event_id,user_id,duration) VALUES ('+eventId[0].event_id+','+userId[0].user_id+','+duration+')';
+    const insertQuery = 'INSERT INTO EVENTRESPONSES (event_id,user_id,duration) VALUES ('+eventId[0].event_id+','+userId[0].user_id+',\''+duration+'\')';
     await DB.executeQuery(insertQuery);
         
   } catch (error) {
