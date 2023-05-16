@@ -4,13 +4,25 @@
 	<title>Page Title</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="allStyles.css">
-	<link rel="stylesheet" href="game.css">
+	<link rel="stylesheet" href="./game.css">
+	<link rel="stylesheet" href="./allStyles.css">
+	<!-- <script src="gameUI.js" type="module" defer></script> -->
+	<script src="./gameMain.js" type="module" defer></script>
+	<script src="./keyboardKey.js" defer></script>
 </head>
 <body>
-	<section>
-		<h1>This is a Heading</h1>
-		<p>This is a paragraph.</p>
-	</section>
+	<div id="mainHolder" class="smallRound">
+		<h1>
+		</h1>
+		<button class="functionButtons iconButton" type="button" id="colorToggle">
+		</button>
+		<label for="" id="timeCount">{DisplayTimeCount}</label>
+		<section id="displayBoard">
+ 		</section>
+		<button id="enterButton" class="round">Enter</button>
+		<section id="keyboardContainer">
+		</section>
+		<!-- <input class="functionButtons" type="button" id="colorToggle"> -->
+	</div>
 </body>
 </html>

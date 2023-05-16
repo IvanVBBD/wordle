@@ -9,8 +9,6 @@ const gameRouter = express.Router();
 
 gameRouter.get('/', async function (req, res) {
   const email = 'ivanblizz23@gmail.com';//req.user.emails[0].value;
-  const newWord = word.createNewEvent();
-  console.log(newWord);
   auth.checkUserProfile(email);
   res.sendFile(path.join(__dirname, '../views/game.html'));
   //res.end(await readFile(path.join(__dirname, "../views/index.html")))
@@ -21,7 +19,7 @@ gameRouter.get('/GetChallenge',async function(req,res) {
   let currentWord = await word.getActiveEvent();
   console.log('------Current word-------');
   console.log(currentWord);
-  res.send(currentWord);
+  res.json({word : currentWord[0].word});
 });
 
 gameRouter.post('/SaveGame', async function(req,res) {

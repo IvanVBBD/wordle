@@ -29,9 +29,6 @@ async function HighScores(){
     } catch (error) {
         console.log("ooops user error occured: " + error);
     }
-    catch (err){
-
-    }
 }
 
 module.exports = {SaveGame, HighScores};
