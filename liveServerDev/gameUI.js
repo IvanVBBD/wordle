@@ -57,11 +57,9 @@ gameUIManager.addListenerToUIUpdate(UIIDList.logo,updateLogo );
 gameUIManager.addUIState(UIIDList.colorToggle,UIConstants.logo.lightMode);
 gameUIManager.addListenerToUIUpdate(UIIDList.colorToggle,updateThemeIcon );
 
-gameUIManager.addUIState(UIIDList.mainEnterButton ,false);
-gameUIManager.addListenerToUIUpdate(UIIDList.mainEnterButton,updateThemeIcon );
 
-console.log(gameUIManager.UIState);
-console.log(gameUIManager.pubSub.publishedEvents);
+console.log(JSON.stringify(gameUIManager.UIState) );
+console.log( JSON.stringify(gameUIManager.pubSub.publishedEvents) );
 // Method which is triggered on the onclick event of the theme icon click
 function onThemeSwitchClick(){
   // Updating the logical state of the theme
@@ -192,11 +190,14 @@ async function enterClick(){
   const correctWord = (await getWordOfTheDay()).toUpperCase();
   const loc = gridIndexToCord();
   const wasCorrect = checkEnteredValue(correctWord,loc[1]);
-
+  console.log(wasCorrect);
   if (!wasCorrect)
     bumpGridIndex(true);
   else{
+    alert('');
+    
     await postUserData(compDataState.currentTime);
+    alert('');
   }
 }
 
@@ -204,8 +205,8 @@ function updateButtonBackground(newBackgroundColor){
   alert('Nice');
 }
 
-gameUIManager.addUIState(UIIDList.enterButton,false);
-gameUIManager.addListenerToUIUpdate(UIIDList.enterButton,updateButtonBackground);
+gameUIManager.addUIState(UIIDList.mainEnterButton,false);
+gameUIManager.addListenerToUIUpdate(UIIDList.mainEnterButton,updateButtonBackground);
 
 /**
  * Loads DOM elements with corresponding events and methods into the UITree;
@@ -214,7 +215,7 @@ export function activateUI(){
   //Adds finds and adds methods as subscribers to the given domElement
   const reactiveComponentList = [
     new UIHelpers.DOD(UIIDList.colorToggle, undefined, 'click',onThemeSwitchClick),
-    new UIHelpers.DOD(UIIDList.enterButton, undefined, 'click',enterClick),
+    new UIHelpers.DOD(UIIDList.mainEnterButton, undefined, 'click',enterClick),
   ];
   UIHelpers.locateAndMount(UITree,reactiveComponentList);
 
