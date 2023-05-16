@@ -33,7 +33,7 @@ async function getActiveEvent(){
   try{
     const query = 'SELECT * FROM EVENTS WHERE active = 1';
     let result = await DB.executeQuery(query);
-    console.log(result + ' ----');
+    return result
   }catch(e){
     console.log(e);
   }

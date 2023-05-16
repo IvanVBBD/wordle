@@ -27,7 +27,7 @@ CREATE TABLE [EVENTRESPONSES]
   [response_id] INTEGER IDENTITY(1,1) PRIMARY KEY,
   [event_id] INTEGER,
   [user_id] INTEGER,
-  [score] SMALLINT
+  [duration] TIME(0)
 )
 GO
 

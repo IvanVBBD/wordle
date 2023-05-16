@@ -13,8 +13,6 @@ const getScore =  async () => {
     newListItem.textContent = x.user_email + ' - ' + x.score;
     scoreBoard.appendChild(newListItem);
   });
-    
-
 };
 
 getScore();
