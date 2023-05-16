@@ -6,7 +6,8 @@ const gameRoute = require('./routes/gameRoute');
 const authRoute = require('./routes/authRoute');
 const session = require('express-session');
 const passport = require('passport');
-const highscoreRoute = require("./routes/highScoreRoute")
+const highscoreRoute = require('./routes/highScoreRoute');
+const word = require("./routes/Utility/wordUtils")
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express();
 const port = process.env.PORT || 3000;
@@ -55,9 +56,15 @@ app.get('/', (req, res) => {
 
 app.use(express.static('scripts'));
 app.use(express.static('styling'));
+app.use(express.static('resources'));
+app.use(express.static('images'));
 app.use('/Game',gameRoute);
 app.use('/Auth',authRoute);
 app.use('/Highscore',highscoreRoute);
+
+const newWord = word.createNewEvent();
+console.log(newWord);
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
