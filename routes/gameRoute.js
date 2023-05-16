@@ -26,7 +26,7 @@ gameRouter.get('/GetChallenge',async function(req,res) {
 
 gameRouter.post('/SaveGame', async function(req,res) {
   const data = req.body;
-  gameUtils.SaveGame(data.score, data.email);
+  gameUtils.SaveGame(data.duration, data.email);
   console.log(data);
   res.json({ message: 'Successful', data });
   res.statusCode = 201;

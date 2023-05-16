@@ -1,14 +1,14 @@
 const word = require('./wordUtils');
 const DB = require('./dbUtils');
 
-async function SaveGame(score,email){
+async function SaveGame(duration,email){
   try {
     await word.getActiveEvent();
     const userIDQuery = 'SELECT user_id FROM USERS WHERE user_email = \'' + email + '\'';
     const eventIDQuery = 'SELECT event_id FROM EVENTS WHERE active = 1';
     let eventId = await DB.executeQuery(eventIDQuery);
     let userId = await DB.executeQuery(userIDQuery);
-    const insertQuery = 'INSERT INTO EVENTRESPONSES (event_id,user_id,score) VALUES ('+eventId[0].event_id+','+userId[0].user_id+','+score+')';
+    const insertQuery = 'INSERT INTO EVENTRESPONSES (event_id,user_id,duration) VALUES ('+eventId[0].event_id+','+userId[0].user_id+','+duration+')';
     await DB.executeQuery(insertQuery);
         
   } catch (error) {
@@ -19,7 +19,7 @@ async function SaveGame(score,email){
 
 async function HighScores(){
     try{
-        const highScoreQuery = `select EVENTS.event_id, USERS.user_id, USERS.user_email, EVENTS.word, EVENTRESPONSES.score from EVENTRESPONSES
+        const highScoreQuery = `select EVENTS.event_id, USERS.user_id, USERS.user_email, EVENTS.word, EVENTRESPONSES.duration from EVENTRESPONSES
         INNER JOIN EVENTS ON EVENTRESPONSES.event_id = EVENTS.event_id
         INNER JOIN USERS ON EVENTRESPONSES.user_id = USERS.user_id
         where EVENTS.ACTIVE = 1;`;
