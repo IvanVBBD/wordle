@@ -6,6 +6,5 @@ export default async function getWordOfTheDay(){
   //Hit endpoint here
   const baseUrl = window.location.href.split('/').slice(0, 3).join('/');
   const word = await fetch(`${baseUrl}/GetChallenge`);
-  console.log(word);
   return 'Plant';
 }

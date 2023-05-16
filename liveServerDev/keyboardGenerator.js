@@ -1,7 +1,17 @@
 import { UIConstants,UIIDList } from './gameUIConstants.js';
 import * as UIHelpers from './UIHelpers.js';
+import UIStateManager from './UIStateManager.js';
 
-export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backClickMeth){
+/**
+ * Generates a keyboard on the given HTML element
+ * @param {HTMLElement} targetLocation 
+ * @param {Function} alphaClicksMeth 
+ * @param {Object} UITree 
+ * @param {Function} backClickMeth 
+ * @param {UIStateManager} gameUIManager 
+ * @param {Function} alphaKeyUIUpdateMeth 
+ */
+export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backClickMeth,gameUIManager,alphaKeyUIUpdateMeth){
   const backButHTML = `      
     <key-button id="${UIIDList.buttonBackSpace}" class="iconButton">
       
@@ -13,7 +23,10 @@ export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backCl
   let rowCount = 0;
   UIConstants.keyboardLayout.forEach(keyline => {
     HTMLKeys =keyline.split('').map((key)=>{
-      buttonIDs.push(`button${key}`);
+      const buttonID = `button${key}`;
+      buttonIDs.push(buttonID);
+      gameUIManager.addUIState(buttonID,true);
+      gameUIManager.addListenerToUIUpdate(buttonID,alphaKeyUIUpdateMeth);
       return `
       <key-button id="button${key}">
         <p>${key}</p>

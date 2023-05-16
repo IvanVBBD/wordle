@@ -7,7 +7,7 @@ export default async function postUserData(time){
     // Add any other required headers
     },
     body: JSON.stringify({
-      duration:time
+      duration:`00:${time}`
     }) // Replace 'data' with your actual request payload
   })
     .then(response => response.json())

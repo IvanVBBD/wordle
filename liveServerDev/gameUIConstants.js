@@ -60,6 +60,17 @@ const UIConstants = {
     'ASDFGHJKL',
     'ZXCVBNM'
   ],
+  enterButton:{
+    backgroundVar: '--enterBackground',
+    lightmode:{
+      enable: '#639999',
+      disabled: '#648080',
+    },
+    darkmode:{
+      enable: '#639999',
+      disabled: '#648080',
+    }
+  },
   gridDisplayItemState:{
     completelyCorrect: 'completelyCorrect',
     semiCorrect: 'correctLetterWrongPlace',

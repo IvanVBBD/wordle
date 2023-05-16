@@ -40,8 +40,10 @@ export class PubSubManager{
       });
       debugManager.doLog(PubSubManager.debugMode,{successLog:`Broadcasting event to ${this.publishedEvents[eventName].length} listeners`});
       return true;
+    
     }
-    debugManager.doLog(PubSubManager.debugMode,undefined,`No broadcast group found for the event name of ${eventName}`);
+    debugManager.doLog(PubSubManager.debugMode,{unsuccessLog:`No broadcast group found for the event name of ${eventName}`});
+
     return false;
   }
   

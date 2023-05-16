@@ -7,6 +7,7 @@ import { LetterNode } from './generateInputGrid.js';
 import getWordOfTheDay from './getWordOfTheDay.js';
 import words from './validWords.js';
 import postUserData from './uploadUserScore.js';
+import {alphaBGUpdateObject} from './types.js';
 
 const compDataState = { //Game data state being display and what is used for logic
   colorStateLight:true,
@@ -57,9 +58,6 @@ gameUIManager.addListenerToUIUpdate(UIIDList.logo,updateLogo );
 gameUIManager.addUIState(UIIDList.colorToggle,UIConstants.logo.lightMode);
 gameUIManager.addListenerToUIUpdate(UIIDList.colorToggle,updateThemeIcon );
 
-
-console.log(JSON.stringify(gameUIManager.UIState) );
-console.log( JSON.stringify(gameUIManager.pubSub.publishedEvents) );
 // Method which is triggered on the onclick event of the theme icon click
 function onThemeSwitchClick(){
   // Updating the logical state of the theme
@@ -154,7 +152,7 @@ function unBumpIndex(){
 }
 
 /**
- * Checks the user input agains the received value and updating the GUI
+ * Checks the user input against the received value and updating the GUI
  * @param {string} userWord 
  * @param {string} gottenWord 
  * @param {number} row 
@@ -166,8 +164,12 @@ function checkEnteredValue(gottenWord,row){
     /** @type { LetterNode } */
     const currentUIState = gameUIManager.getUIState(UIID);
 
+    const buttonID = `button${currentUIState.letterValue}`;
+    // const currentButton = UITree[];
     if (currentUIState.letterValue == gottenWord.charAt(i))
+    {
       currentUIState.colorState = UIConstants.gridDisplayItemState.completelyCorrect;
+    }
     else if (gottenWord.indexOf(currentUIState.letterValue)>=0)
     {
       currentUIState.colorState = UIConstants.gridDisplayItemState.semiCorrect;
@@ -180,33 +182,105 @@ function checkEnteredValue(gottenWord,row){
     }
     
     gameUIManager.updateUIState(UIID,currentUIState);
+    gameUIManager.updateUIState(buttonID, {
+      newColor:currentUIState.colorState,
+      htmlElem: UITree[buttonID]
+    });
   }
+  
   return allCharCorrect;
 }
 
+/**
+ * Calls does game logic and maybe call the postDataMethod
+ * @returns 
+ */
 async function enterClick(){
   if (!compDataState.canUseEnter)
     return;
   const correctWord = (await getWordOfTheDay()).toUpperCase();
   const loc = gridIndexToCord();
   const wasCorrect = checkEnteredValue(correctWord,loc[1]);
-  console.log(wasCorrect);
   if (!wasCorrect)
     bumpGridIndex(true);
   else{
-    alert('');
-    
     await postUserData(compDataState.currentTime);
-    alert('');
   }
 }
 
-function updateButtonBackground(newBackgroundColor){
-  alert('Nice');
+/**
+ * Update displaycolor of keyboard background
+ * @param {alphaBGUpdateObject} Object containing new background color and htmlElement
+ */
+function alphaBGUpdate({newColor,htmlElem}){
+  htmlElem.style.backgroundColor = `var(${newColor})`;
+  htmlElem.classList.forEach(element => {
+    htmlElem.classList.remove(element);
+  });
+  htmlElem.classList.add(newColor);
 }
 
-gameUIManager.addUIState(UIIDList.mainEnterButton,false);
+/**
+ * resolves the background color of the enter button
+ * @returns {string} the color of the background
+ */
+function resolveEnterBackgroundColor(){
+  const colorpallet = (compDataState.colorStateLight)? UIConstants.enterButton.lightmode: UIConstants.enterButton.darkmode;
+  return (compDataState.canUseEnter)?colorpallet.enable:colorpallet.disabled; 
+}
+
+/**
+ * Update the enter Button background
+ * @param {string } newBackgroundColor
+ */
+function updateButtonBackground(newBackgroundColor){
+  const rootVars = document.querySelector(':root');
+  rootVars.style.setProperty(UIConstants.enterButton.backgroundVar ,newBackgroundColor);
+}
+
+/**
+ * event which triggers when a key is clicked
+ * @param {string} key 
+ */
+function alphaKeyClick(key){
+  /** @type {number[]} */
+  const locate =gridIndexToCord();
+
+  /** @type {string} */
+  const accessUIID = `R${locate[1]}C${locate[0]}`;
+
+  /** @type { LetterNode }*/
+  const currentState = gameUIManager.getUIState(accessUIID);
+  currentState.letterValue = key;
+
+  gameUIManager.updateUIState(accessUIID, currentState);
+  bumpGridIndex(false);
+
+  compDataState.canUseEnter = isValidWord(getInputString());
+
+  gameUIManager.updateUIState(UIIDList.mainEnterButton,resolveEnterBackgroundColor());
+}
+
+/**
+ * executes when back button is clicked
+ */
+function backButtonClick(){
+  const locate =gridIndexToCord();
+
+  /** @type {string} */
+  const accessUIID = `R${locate[1]}C${locate[0]}`;
+
+  const currentState = gameUIManager.getUIState(accessUIID);
+  currentState.letterValue = '';
+
+  gameUIManager.updateUIState(accessUIID, currentState);
+  
+  unBumpIndex();
+}
+
+gameUIManager.addUIState(UIIDList.mainEnterButton,{});
 gameUIManager.addListenerToUIUpdate(UIIDList.mainEnterButton,updateButtonBackground);
+updateButtonBackground(resolveEnterBackgroundColor());
 
 /**
  * Loads DOM elements with corresponding events and methods into the UITree;
@@ -228,42 +302,9 @@ export function activateUI(){
   UIHelpers.locateUI(UITree,liveComponentList);
 
   calculateGameTimePass();
-  //Time ticks lol
   setInterval(calculateGameTimePass,1000);
 
-  console.log(gameUIManager.pubSub.publishedEvents);
-
-  genKeyboard(UITree.keyboardContainer,(x)=>{
-
-    /** @type {number[]} */
-    const locate =gridIndexToCord();
-
-    /** @type {string} */
-    const accessUIID = `R${locate[1]}C${locate[0]}`;
-
-    /** @type { LetterNode }*/
-    const currentState = gameUIManager.getUIState(accessUIID);
-    currentState.letterValue = x;
-
-    gameUIManager.updateUIState(accessUIID, currentState);
-    bumpGridIndex(false);
-
-    compDataState.canUseEnter = isValidWord(getInputString());
-    console.log(compDataState.canUseEnter);
-    gameUIManager.updateUIState('Temp',(compDataState.canUseEnter));
-  },UITree,()=>{
-    const locate =gridIndexToCord();
-
-    /** @type {string} */
-    const accessUIID = `R${locate[1]}C${locate[0]}`;
-
-    const currentState = gameUIManager.getUIState(accessUIID);
-    currentState.letterValue = '';
-
-    gameUIManager.updateUIState(accessUIID, currentState);
-    
-    unBumpIndex();
-  });
+  genKeyboard(UITree.keyboardContainer,alphaKeyClick ,UITree,backButtonClick, gameUIManager,alphaBGUpdate);
 
   UIHelpers.locateUI(UITree,[new UIHelpers.DOD(UIIDList.displayBoard)]);
   generateInputGrid(UITree,gameUIManager,UITree[UIIDList.displayBoard]);
