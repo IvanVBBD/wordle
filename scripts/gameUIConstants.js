@@ -26,7 +26,7 @@ const UIConstants = {
     ['--buttonFontColor','white'],
     ['--completeCorrect', '#53e485'],
     ['--semiCorrect', '#efde45'],
-    ['--wrong', '#6b7378'],
+    ['--wrong', '#343434'],
     ['--wrongFontColor','#90959F'],
     ['--enterBackground','#639999'],
     ['--defaultFont','white'],
@@ -76,7 +76,16 @@ const UIConstants = {
     semiCorrect: 'correctLetterWrongPlace',
     wrong: 'completelyWrong'
   },
-  gridSize:5
+  gridSize:{
+    varName: '--gridSize',
+    value: 5
+  },
+  gridSelectedClass:{
+    className:'currentlySelected',
+    lightModeValue: 0.6,
+    darkModeValue:1.6,
+    varName: '--brightnessValue'
+  },
 };
 
 /**

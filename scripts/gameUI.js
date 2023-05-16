@@ -3,11 +3,10 @@ import * as UIHelpers from './UIHelpers.js';
 import { UIConstants,UIIDList } from './gameUIConstants.js';
 import genKeyboard from './keyboardGenerator.js';
 import generateInputGrid from './generateInputGrid.js';
-import { LetterNode } from './generateInputGrid.js';
 import getWordOfTheDay from './getWordOfTheDay.js';
 import words from './validWords.js';
 import postUserData from './uploadUserScore.js';
-import {alphaBGUpdateObject} from './types.js';
+import {alphaBGUpdateObject, LetterNode} from './types.js';
 
 const compDataState = { //Game data state being display and what is used for logic
   colorStateLight:true,
@@ -15,9 +14,17 @@ const compDataState = { //Game data state being display and what is used for log
   startTime: new Date(),
   activeGridInput: 0,
   canUseEnter: false,
-  currentTime: null
+  currentTime: null,
+  /** @type {HTMLElement} */
+  previousSelected:null,
+  intervalStorage: null
 };
-
+function setUpdateGridSize(){
+  /** @type { HTMLElement } */
+  const rootVars = document.querySelector(':root');
+  rootVars.style.setProperty(UIConstants.gridSize.varName,UIConstants.gridSize.value);
+}
+setUpdateGridSize();
 /**
  * updates the css root variables with the corresponding color value
  * @param {*} ColorPallet theme passed in
@@ -27,6 +34,7 @@ function updateColorPalletFromState(ColorPallet){
   ColorPallet.forEach(colorPair => {
     rootVars.style.setProperty(colorPair[0],colorPair[1]);
   });
+  rootVars.style.setProperty(UIConstants.gridSelectedClass.varName,(compDataState.colorStateLight)?UIConstants.gridSelectedClass.lightModeValue:UIConstants.gridSelectedClass.darkModeValue);
 }
 
 /**
@@ -72,6 +80,7 @@ function onThemeSwitchClick(){
 
   const themeIcon = (compDataState.colorStateLight)? UIConstants.icons.themeIcon.lightMode: UIConstants.icons.themeIcon.darkMode;
   gameUIManager.updateUIState(UIIDList.colorToggle,themeIcon);
+
 }
 
 // Utility method to calculate and update the timer UI Component
@@ -98,27 +107,29 @@ const UITree = {};
  */
 function gridIndexToCord(){
   // Yes its X;Y;
-  return [compDataState.activeGridInput % UIConstants.gridSize, Math.floor(compDataState.activeGridInput / UIConstants.gridSize)];
+  return [compDataState.activeGridInput % UIConstants.gridSize.value, Math.floor(compDataState.activeGridInput / UIConstants.gridSize.value)];
 }
 
 function bumpGridIndex(enterClick){
   
-  if (enterClick)
-  {
-    compDataState.activeGridInput++;
+  if (! (enterClick || compDataState.activeGridInput == 0 || (compDataState.activeGridInput+1) % UIConstants.gridSize.value))
     return;
-  }
+  compDataState.activeGridInput++;
 
-  if (compDataState.activeGridInput == 0)
-  {
-    compDataState.activeGridInput++;
-    return;
-  }
+  updateNowSelectedInputBox();
+}
 
-  if ((compDataState.activeGridInput+1) % UIConstants.gridSize)
-  {
-    compDataState.activeGridInput++;
+/**
+ * Unbumps the 
+ * @returns 
+ */
+function unBumpIndex(){
+  if (compDataState.activeGridInput <= 0)
     return;
+  if ((compDataState.activeGridInput) % UIConstants.gridSize.value)
+  {
+    compDataState.activeGridInput--;
+    updateNowSelectedInputBox();
   }
 }
 
@@ -134,21 +145,10 @@ function getInputString(){
 
   const loc = gridIndexToCord();
   let strOut = '';
-  for (let i= 0; i < UIConstants.gridSize;i++){
+  for (let i= 0; i < UIConstants.gridSize.value;i++){
     strOut += gameUIManager.getUIState(`R${loc[1]}C${i}`)?.letterValue;
   }
   return strOut;
-}
-
-/**
- * Unbumps the 
- * @returns 
- */
-function unBumpIndex(){
-  if (compDataState.activeGridInput <= 0)
-    return;
-  if ((compDataState.activeGridInput) % UIConstants.gridSize)
-    compDataState.activeGridInput--;
 }
 
 /**
@@ -159,7 +159,7 @@ function unBumpIndex(){
  */
 function checkEnteredValue(gottenWord,row){
   let allCharCorrect = true;
-  for (let i = 0; i < UIConstants.gridSize; i++){
+  for (let i = 0; i < UIConstants.gridSize.value; i++){
     const UIID = `R${row}C${i}`;
     /** @type { LetterNode } */
     const currentUIState = gameUIManager.getUIState(UIID);
@@ -204,6 +204,9 @@ async function enterClick(){
   if (!wasCorrect)
     bumpGridIndex(true);
   else{
+    clearInterval(compDataState.intervalStorage);
+    compDataState.canUseEnter = false;
+    gameUIManager.updateUIState(UIIDList.enterButton,resolveEnterBackgroundColor());
     await postUserData(compDataState.currentTime);
   }
 }
@@ -254,7 +257,7 @@ function alphaKeyClick(key){
   currentState.letterValue = key;
 
   gameUIManager.updateUIState(accessUIID, currentState);
-  bumpGridIndex(false);
+  bumpGridIndex(false);  
 
   compDataState.canUseEnter = isValidWord(getInputString());
 
@@ -278,6 +281,15 @@ function backButtonClick(){
   unBumpIndex();
 }
 
+function updateNowSelectedInputBox(){
+  const loc = gridIndexToCord();
+  if (compDataState.previousSelected)
+    compDataState.previousSelected.classList.remove(UIConstants.gridSelectedClass.className);
+  
+  compDataState.previousSelected = UITree[`R${loc[1]}C${loc[0]}`];
+  compDataState.previousSelected.classList.add(UIConstants.gridSelectedClass.className);
+}
+
 gameUIManager.addUIState(UIIDList.mainEnterButton,{});
 gameUIManager.addListenerToUIUpdate(UIIDList.mainEnterButton,updateButtonBackground);
 updateButtonBackground(resolveEnterBackgroundColor());
@@ -286,6 +298,7 @@ updateButtonBackground(resolveEnterBackgroundColor());
  * Loads DOM elements with corresponding events and methods into the UITree;
  */
 export function activateUI(){
+
   //Adds finds and adds methods as subscribers to the given domElement
   const reactiveComponentList = [
     new UIHelpers.DOD(UIIDList.colorToggle, undefined, 'click',onThemeSwitchClick),
@@ -302,10 +315,13 @@ export function activateUI(){
   UIHelpers.locateUI(UITree,liveComponentList);
 
   calculateGameTimePass();
-  setInterval(calculateGameTimePass,1000);
+  compDataState.intervalStorage = setInterval(calculateGameTimePass,1000);
 
   genKeyboard(UITree.keyboardContainer,alphaKeyClick ,UITree,backButtonClick, gameUIManager,alphaBGUpdate);
 
   UIHelpers.locateUI(UITree,[new UIHelpers.DOD(UIIDList.displayBoard)]);
   generateInputGrid(UITree,gameUIManager,UITree[UIIDList.displayBoard]);
+
+  updateNowSelectedInputBox();
+
 }
