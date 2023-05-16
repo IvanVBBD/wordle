@@ -3,6 +3,8 @@
   --soundToggleSVG: url("soundOn.svg");
   --wordleLogo: url("wordleLogoLightMode.svg");
   --backspaceIcon: url("backspaceIconLightMode.svg");
+  --brightnessValue: 0.8;
+  --gridSize: 5;
 }
 
 body{
@@ -17,6 +19,9 @@ body{
   grid-template-rows: 2fr 1fr 7fr 1.5fr 4fr;
   margin: 1vw;
   grid-template-columns: 2fr 8fr 2fr;
+  max-height: 98vh;
+  min-width: 350px;
+  min-height: 650px;
 }
 
 h1 {
@@ -46,8 +51,8 @@ h1 {
 }
 
 #colorToggle {
-  grid-column-start: 3;
-  grid-column-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 1;
   grid-row: 1;
   background-image: var(--colorToggleSVG);
 }
@@ -67,8 +72,8 @@ h1 {
   grid-row: 3;
   margin: 0 4%;
   gap: 1vw;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-columns: repeat(var( --gridSize), 1fr);
+  grid-template-rows: repeat(var( --gridSize), 1fr);
 }
 
 .smallRound{
@@ -91,7 +96,8 @@ h1 {
   background-color: var(--enterBackground);
   color: var(--buttonFontColor);
   border: none;
-  font-size: 1.2rem;
+  font-size: 5vh;
+
 }
 
 #keyboardContainer{
@@ -118,7 +124,7 @@ h1 {
 
 key-button{
   display: flex;
-
+  font-size: 4vh;
   background-color: var(--defaultButtonBGColor);
   align-items: center;
   justify-content: center;
@@ -139,11 +145,14 @@ key-button{
   background-color:  var(--wrong);
 }
 
+.currentlySelected {
+  filter: brightness(var(--brightnessValue));
+}
+
  @media only screen and (max-width: 600px) {
 
   #mainHolder {
     width: 95vw;
-    max-height: ;
   }
 
   #displayBoard{
@@ -152,10 +161,6 @@ key-button{
 
   #timeCount{
     font-size: 1.5rem;
-  }
-
-  key-button{
-    font-size: 10vw;
   }
 
   .gridItem {
@@ -174,10 +179,6 @@ key-button{
   }
 
   #timeCount{
-    font-size: 1.5rem;
-  }
-
-  key-button{
     font-size: 1.5rem;
   }
 

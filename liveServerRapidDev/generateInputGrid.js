@@ -1,16 +1,7 @@
 import * as UIHelpers from './UIHelpers.js';
 import { UIConstants } from './gameUIConstants.js';
-
-// eslint-disable-next-line no-unused-vars
 import UIStateManager from './UIStateManager.js';
-export class LetterNode{
-
-  constructor( letterValue, colorState, ID){
-    this.letterValue = letterValue;
-    this.colorState = colorState;
-    this.ID = ID;
-  }
-}
+import { LetterNode } from './types.js';
 
 /**
  * Generates and mounts grid Code
@@ -24,8 +15,8 @@ export default function generateInputGrid(UITree,gameUIManager,MountTarget){
   const gridDODList = [];
   /** @type {(number)} */
   let HTMLOut = '';
-  for (let r = 0; r < UIConstants.gridSize; r++)
-    for (let c = 0; c < UIConstants.gridSize; c++)
+  for (let r = 0; r < UIConstants.gridSize.value; r++)
+    for (let c = 0; c < UIConstants.gridSize.value; c++)
     {
       HTMLOut += `
         <div class="gridItem smallRound" id="R${r}C${c}"><p></p></div>
