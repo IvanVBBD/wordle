@@ -3,7 +3,8 @@ import * as UIHelpers from './UIHelpers.js';
 import { UIConstants,UIIDList } from './gameUIConstants.js';
 import genKeyboard from './keyboardGenerator.js';
 import generateInputGrid from './generateInputGrid.js';
-import { LetterNode } from './generateInputGrid.js'
+import { LetterNode } from './generateInputGrid.js';
+import getWordOfTheDay from './getWordOfTheDay.js';
 
 const compDataState = { //Game data state being display and what is used for logic
   colorStateLight:true,
@@ -103,20 +104,41 @@ function bumpGridIndex(enterClick){
   if (compDataState.activeGridInput == 0)
   {
     compDataState.activeGridInput++;
-    return
+    return;
   }
   if (compDataState.activeGridInput % (UIConstants.gridSize-1) != 0)
   {
     compDataState.activeGridInput++;
-    return
+    return;
   }
 }
 
-function getInputString(){
-  const loc = gridIndexToCord();
-  for (let i= 0; i < UIConstants.gridSize;i++){
+function unBumpIndex(){
+  if (compDataState.activeGridInput <= 0)
+    return;
+  compDataState.activeGridInput--;
+}
 
+/**
+ * Gets the last row of input that is displayed
+ * @returns @type {string} The combined characters in the last row.
+ */
+function getInputString(){
+
+  const loc = gridIndexToCord();
+  let strOut = '';
+  console.log(gameUIManager.UIState);
+  console.log(loc);
+  for (let i= 0; i < UIConstants.gridSize;i++){
+    strOut += gameUIManager.getUIState(`R${loc[1]}C${i}`)?.letterValue;
   }
+  return strOut;
+}
+
+async function enterClick(){
+  const correctWord = (await getWordOfTheDay()).toUpperCase();
+  // alert(getInputString());
+  // alert(correctWord);
 }
 
 /**
@@ -126,6 +148,7 @@ export function activateUI(){
   //Adds finds and adds methods as subscribers to the given domElement
   const reactiveComponentList = [
     new UIHelpers.DOD(UIIDList.colorToggle, undefined, 'click',onThemeSwitchClick),
+    new UIHelpers.DOD(UIIDList.enterButton, undefined, 'click',enterClick),
   ];
   UIHelpers.locateAndMount(UITree,reactiveComponentList);
 
@@ -149,15 +172,26 @@ export function activateUI(){
     const accessUIID = `R${locate[1]}C${locate[0]}`;
 
     /** @type { LetterNode }*/
-    const currentState = gameUIManager.getUIState(accessUIID)
+    const currentState = gameUIManager.getUIState(accessUIID);
     currentState.letterValue = x;
 
     gameUIManager.updateUIState(accessUIID, currentState);
     bumpGridIndex(false);
   },UITree,()=>{
-    alert('back Clicked');
+    const locate =gridIndexToCord();
+
+    /** @type {string} */
+    const accessUIID = `R${locate[1]}C${locate[0]}`;
+
+    const currentState = gameUIManager.getUIState(accessUIID);
+    currentState.letterValue = '';
+
+    gameUIManager.updateUIState(accessUIID, currentState);
+    unBumpIndex();
   });
 
   UIHelpers.locateUI(UITree,[new UIHelpers.DOD(UIIDList.displayBoard)]);
   generateInputGrid(UITree,gameUIManager,UITree[UIIDList.displayBoard]);
+
+
 }

@@ -11,7 +11,6 @@ export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backCl
   let HTMLOut = '';
   const buttonIDs = [];
   let rowCount = 0;
-  console.log(UIConstants.keyboardLayout);
   UIConstants.keyboardLayout.forEach(keyline => {
     HTMLKeys =keyline.split('').map((key)=>{
       buttonIDs.push(`button${key}`);
@@ -28,7 +27,6 @@ export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backCl
 
   const reactiveComponentList = buttonIDs.map( (id) =>{
     return new UIHelpers.DOD(id, undefined, 'click',() =>{
-      console.log(id);
       alphaClicksMeth(id.substring(6));
     });
   });

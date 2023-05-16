@@ -71,7 +71,8 @@ const UIIDList ={
   logo: 'logo',
   displayBoard: 'displayBoard',
   keyboardContainer: 'keyboardContainer',
-  buttonBackSpace: 'buttonBackSpace'
+  buttonBackSpace: 'buttonBackSpace',
+  enterButton: 'enterButton'
 };
 
 export {UIConstants, UIIDList};

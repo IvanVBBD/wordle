@@ -33,7 +33,6 @@ export default function generateInputGrid(UITree,gameUIManager,MountTarget){
       gridDODList.push( new UIHelpers.DOD(`R${r}C${c}`,undefined,undefined,undefined) );
     }
 
-  console.log(MountTarget);
   MountTarget.innerHTML = HTMLOut;
   UIHelpers.locateUI(UITree,gridDODList);
   gridDODList.forEach(dodElm => {
