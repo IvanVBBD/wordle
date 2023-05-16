@@ -78,8 +78,8 @@ const UIIDList ={
   logo: 'logo',
   displayBoard: 'displayBoard',
   keyboardContainer: 'keyboardContainer',
+  mainEnterButton: 'enterButton',
   buttonBackSpace: 'buttonBackSpace',
-  enterButton: 'enterButton'
 };
 
 export {UIConstants, UIIDList};

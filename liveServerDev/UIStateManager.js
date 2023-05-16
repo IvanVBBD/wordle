@@ -6,7 +6,7 @@ import debugManager from './debugLoggerUtils.js';
  * The whole class in its current state is a glorified pubsub manager that remembers state
  */
 export default class UIStateManager{
-  static debugMode = debugManager.debugLevel.None;
+  static debugMode = debugManager.debugLevel.All;
   constructor(){
     //In the current state hashState is only used to track the count of UI changes for a spesific UI element
     this.UIHashState = {};
@@ -41,7 +41,7 @@ export default class UIStateManager{
    * @returns True if state for this UIID has beend added before else false
    */
   addListenerToUIUpdate(UIID,method){
-    if (!this.UIState[UIID])
+    if (!this.UIState[`${UIID}`])
     {
       debugManager.doLog(UIStateManager.debugMode,{unsuccessLog:`Failed to find UI element with ID: ${UIID}`});
       return false;

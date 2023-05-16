@@ -5,13 +5,16 @@ import genKeyboard from './keyboardGenerator.js';
 import generateInputGrid from './generateInputGrid.js';
 import { LetterNode } from './generateInputGrid.js';
 import getWordOfTheDay from './getWordOfTheDay.js';
+import words from './validWords.js';
+import postUserData from './uploadUserScore.js';
 
 const compDataState = { //Game data state being display and what is used for logic
   colorStateLight:true,
   soundOn: false,
   startTime: new Date(),
   activeGridInput: 0,
-  canUseEnter: false
+  canUseEnter: false,
+  currentTime: null
 };
 
 /**
@@ -54,6 +57,11 @@ gameUIManager.addListenerToUIUpdate(UIIDList.logo,updateLogo );
 gameUIManager.addUIState(UIIDList.colorToggle,UIConstants.logo.lightMode);
 gameUIManager.addListenerToUIUpdate(UIIDList.colorToggle,updateThemeIcon );
 
+gameUIManager.addUIState(UIIDList.mainEnterButton ,false);
+gameUIManager.addListenerToUIUpdate(UIIDList.mainEnterButton,updateThemeIcon );
+
+console.log(gameUIManager.UIState);
+console.log(gameUIManager.pubSub.publishedEvents);
 // Method which is triggered on the onclick event of the theme icon click
 function onThemeSwitchClick(){
   // Updating the logical state of the theme
@@ -80,6 +88,7 @@ function calculateGameTimePass(){
 
   const currentTime = new Date(Math.abs(new Date() - compDataState.startTime))  ;
   const time = `${makeTwo(currentTime.getMinutes())}:${makeTwo(currentTime.getSeconds()) }` ;
+  compDataState.currentTime = time;
   UITree[UIIDList.timeCount].innerText = time;
 }
 
@@ -100,7 +109,6 @@ function bumpGridIndex(enterClick){
   
   if (enterClick)
   {
-    
     compDataState.activeGridInput++;
     return;
   }
@@ -116,6 +124,24 @@ function bumpGridIndex(enterClick){
     compDataState.activeGridInput++;
     return;
   }
+}
+
+function isValidWord(userWord){
+  return words.includes(userWord.toLowerCase());
+}
+
+/**
+ * Gets the last row of input that is displayed
+ * @returns @type {string} The combined characters in the last row.
+ */
+function getInputString(){
+
+  const loc = gridIndexToCord();
+  let strOut = '';
+  for (let i= 0; i < UIConstants.gridSize;i++){
+    strOut += gameUIManager.getUIState(`R${loc[1]}C${i}`)?.letterValue;
+  }
+  return strOut;
 }
 
 /**
@@ -137,7 +163,6 @@ function unBumpIndex(){
  */
 function checkEnteredValue(gottenWord,row){
   let allCharCorrect = true;
-  console.log('thing');
   for (let i = 0; i < UIConstants.gridSize; i++){
     const UIID = `R${row}C${i}`;
     /** @type { LetterNode } */
@@ -162,13 +187,25 @@ function checkEnteredValue(gottenWord,row){
 }
 
 async function enterClick(){
+  if (!compDataState.canUseEnter)
+    return;
   const correctWord = (await getWordOfTheDay()).toUpperCase();
   const loc = gridIndexToCord();
   const wasCorrect = checkEnteredValue(correctWord,loc[1]);
-  console.log(wasCorrect);
+
   if (!wasCorrect)
     bumpGridIndex(true);
+  else{
+    await postUserData(compDataState.currentTime);
+  }
 }
+
+function updateButtonBackground(newBackgroundColor){
+  alert('Nice');
+}
+
+gameUIManager.addUIState(UIIDList.enterButton,false);
+gameUIManager.addListenerToUIUpdate(UIIDList.enterButton,updateButtonBackground);
 
 /**
  * Loads DOM elements with corresponding events and methods into the UITree;
@@ -190,7 +227,10 @@ export function activateUI(){
   UIHelpers.locateUI(UITree,liveComponentList);
 
   calculateGameTimePass();
+  //Time ticks lol
   setInterval(calculateGameTimePass,1000);
+
+  console.log(gameUIManager.pubSub.publishedEvents);
 
   genKeyboard(UITree.keyboardContainer,(x)=>{
 
@@ -206,6 +246,10 @@ export function activateUI(){
 
     gameUIManager.updateUIState(accessUIID, currentState);
     bumpGridIndex(false);
+
+    compDataState.canUseEnter = isValidWord(getInputString());
+    console.log(compDataState.canUseEnter);
+    gameUIManager.updateUIState('Temp',(compDataState.canUseEnter));
   },UITree,()=>{
     const locate =gridIndexToCord();
 
@@ -216,11 +260,10 @@ export function activateUI(){
     currentState.letterValue = '';
 
     gameUIManager.updateUIState(accessUIID, currentState);
+    
     unBumpIndex();
   });
 
   UIHelpers.locateUI(UITree,[new UIHelpers.DOD(UIIDList.displayBoard)]);
   generateInputGrid(UITree,gameUIManager,UITree[UIIDList.displayBoard]);
-
-
 }

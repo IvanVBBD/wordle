@@ -50,8 +50,6 @@ function gridElementUpdate(updateInfo){
   const self = document.getElementById(`${updateInfo.ID}`);
   /** @type {HTMLElement} */
   const text =  document.querySelector(`#${updateInfo.ID} p`);
-
-  console.log(updateInfo.colorState);
   
   self.classList.add(updateInfo.colorState);
   
