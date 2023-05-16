@@ -30,6 +30,7 @@ body{
   --timerFontColor: #343434;
   --emptyInputBGColor: #C4CED8;
   --defaultButtonBGColor: #C4CED8;
+  --enterBackgroundDisabled: #648080;
 }
 
 .round{

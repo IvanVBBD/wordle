@@ -10,7 +10,8 @@ const compDataState = { //Game data state being display and what is used for log
   colorStateLight:true,
   soundOn: false,
   startTime: new Date(),
-  activeGridInput: 0
+  activeGridInput: 0,
+  canUseEnter: false
 };
 
 /**
@@ -96,49 +97,77 @@ function gridIndexToCord(){
 }
 
 function bumpGridIndex(enterClick){
+  
   if (enterClick)
   {
+    
     compDataState.activeGridInput++;
     return;
   }
+
   if (compDataState.activeGridInput == 0)
   {
     compDataState.activeGridInput++;
     return;
   }
-  if (compDataState.activeGridInput % (UIConstants.gridSize-1) != 0)
+
+  if ((compDataState.activeGridInput+1) % UIConstants.gridSize)
   {
     compDataState.activeGridInput++;
     return;
   }
 }
 
+/**
+ * Unbumps the 
+ * @returns 
+ */
 function unBumpIndex(){
   if (compDataState.activeGridInput <= 0)
     return;
-  compDataState.activeGridInput--;
+  if ((compDataState.activeGridInput) % UIConstants.gridSize)
+    compDataState.activeGridInput--;
 }
 
 /**
- * Gets the last row of input that is displayed
- * @returns @type {string} The combined characters in the last row.
+ * Checks the user input agains the received value and updating the GUI
+ * @param {string} userWord 
+ * @param {string} gottenWord 
+ * @param {number} row 
  */
-function getInputString(){
+function checkEnteredValue(gottenWord,row){
+  let allCharCorrect = true;
+  console.log('thing');
+  for (let i = 0; i < UIConstants.gridSize; i++){
+    const UIID = `R${row}C${i}`;
+    /** @type { LetterNode } */
+    const currentUIState = gameUIManager.getUIState(UIID);
 
-  const loc = gridIndexToCord();
-  let strOut = '';
-  console.log(gameUIManager.UIState);
-  console.log(loc);
-  for (let i= 0; i < UIConstants.gridSize;i++){
-    strOut += gameUIManager.getUIState(`R${loc[1]}C${i}`)?.letterValue;
+    if (currentUIState.letterValue == gottenWord.charAt(i))
+      currentUIState.colorState = UIConstants.gridDisplayItemState.completelyCorrect;
+    else if (gottenWord.indexOf(currentUIState.letterValue)>=0)
+    {
+      currentUIState.colorState = UIConstants.gridDisplayItemState.semiCorrect;
+      allCharCorrect = false;
+    }
+    else
+    {
+      currentUIState.colorState = UIConstants.gridDisplayItemState.wrong;
+      allCharCorrect = false;
+    }
+    
+    gameUIManager.updateUIState(UIID,currentUIState);
   }
-  return strOut;
+  return allCharCorrect;
 }
 
 async function enterClick(){
   const correctWord = (await getWordOfTheDay()).toUpperCase();
-  // alert(getInputString());
-  // alert(correctWord);
+  const loc = gridIndexToCord();
+  const wasCorrect = checkEnteredValue(correctWord,loc[1]);
+  console.log(wasCorrect);
+  if (!wasCorrect)
+    bumpGridIndex(true);
 }
 
 /**

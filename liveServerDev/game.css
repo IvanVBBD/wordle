@@ -127,6 +127,18 @@ key-button{
   border-radius: 0.75vh;
 }
 
+.completelyCorrect{
+  background-color:  var(--completeCorrect);
+}
+
+.correctLetterWrongPlace{
+  background-color:  var(--semiCorrect);
+}
+
+.completelyWrong{
+  background-color:  var(--wrong);
+}
+
  @media only screen and (max-width: 600px) {
 
   #mainHolder {

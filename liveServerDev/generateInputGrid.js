@@ -51,6 +51,9 @@ function gridElementUpdate(updateInfo){
   /** @type {HTMLElement} */
   const text =  document.querySelector(`#${updateInfo.ID} p`);
 
-  self.style.backgroundColor = updateInfo.colorState;
+  console.log(updateInfo.colorState);
+  
+  self.classList.add(updateInfo.colorState);
+  
   text.innerHTML = updateInfo.letterValue;
 }
