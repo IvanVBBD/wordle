@@ -12,15 +12,12 @@ import UIStateManager from './UIStateManager.js';
  * @param {Function} alphaKeyUIUpdateMeth 
  */
 export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backClickMeth,gameUIManager,alphaKeyUIUpdateMeth){
-  const backButHTML = `      
-    <key-button id="${UIIDList.buttonBackSpace}" class="iconButton">
-      
-    </key-button>
-  `;
+  
   let HTMLKeys = '';
   let HTMLOut = '';
   const buttonIDs = [];
   let rowCount = 0;
+  let tabIndex = 1;
   UIConstants.keyboardLayout.forEach(keyline => {
     HTMLKeys =keyline.split('').map((key)=>{
       const buttonID = `button${key}`;
@@ -28,11 +25,16 @@ export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backCl
       gameUIManager.addUIState(buttonID,true);
       gameUIManager.addListenerToUIUpdate(buttonID,alphaKeyUIUpdateMeth);
       return `
-      <key-button id="button${key}">
+      <key-button id="button${key}" tabindex="${tabIndex++}">
         <p>${key}</p>
       </key-button>
     `;
     }).join('');
+    const backButHTML = `      
+      <key-button id="${UIIDList.buttonBackSpace}" class="iconButton" tabindex="${tabIndex}">
+        
+      </key-button>
+    `;
     HTMLOut += `<div class="keyRow">${HTMLKeys}${(rowCount >= 2)? backButHTML :'' }</div>`;
     rowCount++;
   });
