@@ -18,17 +18,17 @@ async function SaveGame(duration,email){
 }
 
 async function HighScores(){
-    try{
-        const highScoreQuery = `select EVENTS.event_id, USERS.user_id, USERS.user_email, EVENTS.word, EVENTRESPONSES.duration from EVENTRESPONSES
+  try{
+    const highScoreQuery = `select EVENTS.event_id, USERS.user_id, USERS.user_email, EVENTS.word, EVENTRESPONSES.duration from EVENTRESPONSES
         INNER JOIN EVENTS ON EVENTRESPONSES.event_id = EVENTS.event_id
         INNER JOIN USERS ON EVENTRESPONSES.user_id = USERS.user_id
         where EVENTS.ACTIVE = 1;`;
-        const result = await DB.executeQuery(highScoreQuery);
-        return result;
+    const result = await DB.executeQuery(highScoreQuery);
+    return result;
         
-    } catch (error) {
-        console.log("ooops user error occured: " + error);
-    }
+  } catch (error) {
+    console.log('ooops user error occured: ' + error);
+  }
 }
 
 module.exports = {SaveGame, HighScores};

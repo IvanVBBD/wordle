@@ -2,11 +2,10 @@
     "server": {
         "port": 3000
     },
-    "database": "nice",
+    "database": "Driver={ODBC Driver 17 for SQL Server};Server=wordle-db.c68ft3jbsleb.eu-west-1.rds.amazonaws.com;Database=WordleApp;Uid=admin;Pwd=admin1234;",
     "google": {
-        "clientID": "1014783924932-cvq26bk7cd6dfmjepflgm5f5h7jjpej6.apps.googleusercontent.com",
-        "clientSecret": "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",
-        "callbackURL": "http://localhost:3000/auth/google/callback"
-    },
-    "nice": "nice"
+      "clientID": "1014783924932-cvq26bk7cd6dfmjepflgm5f5h7jjpej6.apps.googleusercontent.com",
+      "clientSecret": "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",
+      "callbackURL": "https://localhost:3000/auth/google/callback"
+    }
 }

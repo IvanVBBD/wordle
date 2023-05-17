@@ -1,7 +1,7 @@
 import * as UIHelpers from './UIHelpers.js';
 import { UIConstants } from './gameUIConstants.js';
-import UIStateManager from './UIStateManager.js';
 import { LetterNode } from './types.js';
+import UIStateManager from './UIStateManager.js';
 
 /**
  * Generates and mounts grid Code
