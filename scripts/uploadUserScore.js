@@ -10,14 +10,20 @@ export default async function postUserData(time){
       duration:time
     }) // Replace 'data' with your actual request payload
   })
-    .then(response => response.json())
-    .then(data => {
-    // Handle the response data
-      console.log(data);
-      window.location(`${baseUrl}/Highscore`);
-    })
-    .catch(error => {
+  .then(response => {
+    if (response.redirected) {
+      window.location.href = response.url; // Redirect to the response URL
+    } else {
+      // Handle the response data
+      return response.json();
+    }
+  })
+  .then(data => {
+    // Process the response data if not redirected
+    console.log(data);
+  })
+  .catch(error => {
     // Handle any errors
-      console.error(error);
-    });
+    console.error(error);
+  });
 }

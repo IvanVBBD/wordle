@@ -10,7 +10,7 @@ const getScore =  async () => {
   data.sort((a, b) => b.score - a.score);
   data.map(x=>{
     const newListItem = document.createElement('li');
-    newListItem.textContent = x.user_email + ' - ' + x.score;
+    newListItem.textContent = x.user_email + ' - ' + x.duration;
     scoreBoard.appendChild(newListItem);
   });
 };

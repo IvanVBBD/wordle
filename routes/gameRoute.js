@@ -26,8 +26,7 @@ gameRouter.post('/SaveGame',auth.isLoggedIn, async function(req,res) {
   const data = req.body;
   await gameUtils.SaveGame(data.duration, req.user.emails[0].value);
   console.log(data);
-  res.json({ message: 'Successful', data });
-  res.statusCode = 201;
+  res.redirect("/Highscore");
 });
 
 module.exports = gameRouter;
