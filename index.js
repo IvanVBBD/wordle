@@ -71,11 +71,10 @@ const newWord = word.createNewEvent();
 console.log(newWord);
 
 const options = {
-  key: readFileSync('configs/localhost.key'),
-  cert: readFileSync('configs/localhost.crt'),
+  key: readFileSync('configs/host.key'),
+  cert: readFileSync('configs/hosted.crt'),
 };
 
-console.log("pog we here");
 
 const server = https.createServer(options, app);
 
