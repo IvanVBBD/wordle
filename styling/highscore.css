@@ -1,47 +1,89 @@
-.highscore {
-    margin: 20px auto;
-    max-width: 600px;
+@import url('https://fonts.cdnfonts.com/css/satoshi');
+
+
+.leaderboard {
+  
+    font-family: 'Satoshi';
+    color: white;
+    height: 50%;
+    bottom: 0%;
+    width: 99%;
+    padding: 1%;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom: 0px;
+    background-color: #047575;
+    align-content: center;
+  }
+
+.leaderboard #scoreBoard {
+  font-family: 'Satoshi';
+  color: white;
+  height: 80%;
+  bottom: 80%;
+  left: 2%;
+  width: 90%;
+  background-color: #047575;
+
+}
+
+#scoreBoard td:nth-child(1) {
+  width: 2%;
+  text-align: center;
+  }
+
+
+#scoreBoard td:nth-child(2) {
+  width: 85%;
+  text-align: center;
+}
+
+
+#scoreBoard td:nth-child(3) {
+  width: 13%;
+  text-align: center;
+ } 
+
+#userRow{
+display: flexbox;
+width: 100%;
+margin: 0px;
+border: 2px;
+border-color:#1CB6B6;
+background-color: #1CB6B6;
+}
+
+#scoreBoard tr:nth-child(7) td:nth-child(1) {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#scoreBoard tr:nth-child(7) td:nth-child(3) {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+  
+.leaderboard h2 {
+    font-style: normal;
     text-align: center;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    font-weight: 300;
+    font-size: 20px;
+    color: white;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
   }
+
   
-  .highscore h2 {
-    font-size: 32px;
-    margin-bottom: 20px;
-  }
-  
-  .highscore ul {
+  /* .leaderboard ul {
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-  
-  .highscore li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    font-size: 24px;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  .highscore li:nth-child(even) {
-    background-color: #f8f8f8;
-  }
-  
-  .highscore li:hover {
-    background-color: #ddd;
-  }
-  
-  .highscore li span {
-    display: inline-block;
-    width: 30px;
-    text-align: right;
-    margin-right: 10px;
-    font-weight: bold;
-  }
+  } */
 
-  .highscore-button {
+ /* .leaderboard-button {
     background-color: #252525;
     color: #ffffff;
     padding: 10px 20px;
@@ -53,7 +95,7 @@
     transition: background-color 0.3s ease;
   }
   
-  .highscore-button:hover {
+  .leaderboard-button:hover {
     background-color: #555555;
-  }
+  } */
   
