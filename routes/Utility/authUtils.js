@@ -1,4 +1,5 @@
 const DB = require('./dbUtils');
+const configManager = require('../../globalUtils/configManager');
 
 async function checkUserProfile(email){
   try{
@@ -16,7 +17,7 @@ async function checkUserProfile(email){
 }
 
 const isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  if (configManager.getChain('developerMode.noAuth') || req.isAuthenticated()) {
     return next();
   }
   res.redirect('/Auth');

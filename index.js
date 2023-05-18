@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -11,6 +10,7 @@ const word = require('./routes/Utility/wordUtils');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { readFileSync } = require('fs');
 const https = require('https');
+const configManger = require('./globalUtils/configManager');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -72,11 +72,10 @@ const newWord = word.createNewEvent();
 console.log(newWord);
 
 const options = {
-  key: readFileSync('configs/localhost.key'),
-  cert: readFileSync('configs/localhost.crt'),
+  key: readFileSync('configs/host.key'),
+  cert: readFileSync('configs/host.crt'),
 };
 
-console.log('pog we here');
 
 const server = https.createServer(options, app);
 

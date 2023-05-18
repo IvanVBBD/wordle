@@ -101,9 +101,9 @@
 
 const sql = require('mssql');
 const config = {
-  user: 'admin',
-  password: 'admin1234',
-  server: 'wordle-db.c68ft3jbsleb.eu-west-1.rds.amazonaws.com',
+  user: 'wordle-game',
+  password: 'Admin1234',
+  server: 'wordle-game.database.windows.net',
   database: 'WordleApp',
   options: {
     encrypt: true,
