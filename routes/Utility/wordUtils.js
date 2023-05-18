@@ -17,7 +17,7 @@ async function createNewEvent(){
     await DB.executeQuery(deactivationQuery);
     console.log('Deactivated previous events');
   }catch(e){
-    console.log(e);
+    console.log("-> breaking here " + e);
   }
   const query = 'INSERT INTO EVENTS (word, active) VALUES (\'' + word + '\', 1)';
   try{
