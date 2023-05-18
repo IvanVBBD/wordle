@@ -8,16 +8,24 @@ import words from './validWords.js';
 import postUserData from './uploadUserScore.js';
 import {alphaBGUpdateObject, LetterNode} from './types.js';
 
-const compDataState = { //Game data state being display and what is used for logic
+//Game data state being display and what is used for logic
+const compDataState = { 
+  /** @type {boolean} */
   colorStateLight:true,
+  /** @type {boolean} */
   soundOn: false,
   startTime: new Date(),
+  /** @type {number} */
   activeGridInput: 0,
+  /** @type {boolean} */
   canUseEnter: false,
   currentTime: null,
   /** @type {HTMLElement} */
   previousSelected:null,
-  intervalStorage: null
+  /** @type {number} */
+  intervalStorage: null,
+  /** @type {number} */
+  guessUsed:0
 };
 function setUpdateGridSize(){
   /** @type { HTMLElement } */
@@ -80,6 +88,8 @@ function onThemeSwitchClick(){
 
   const themeIcon = (compDataState.colorStateLight)? UIConstants.icons.themeIcon.lightMode: UIConstants.icons.themeIcon.darkMode;
   gameUIManager.updateUIState(UIIDList.colorToggle,themeIcon);
+
+  gameUIManager.updateUIState(UIIDList.mainEnterButton ,resolveEnterBackgroundColor());
 
 }
 
@@ -198,17 +208,25 @@ function checkEnteredValue(gottenWord,row){
 async function enterClick(){
   if (!compDataState.canUseEnter)
     return;
+  compDataState.guessUsed++;
   const correctWord = (await getWordOfTheDay()).toUpperCase();
   const loc = gridIndexToCord();
   const wasCorrect = checkEnteredValue(correctWord,loc[1]);
-  if (!wasCorrect)
+  if (!wasCorrect && (compDataState.guessUsed < UIConstants.gridSize.value ))
+  {
     bumpGridIndex(true);
-  else{
-    clearInterval(compDataState.intervalStorage);
-    compDataState.canUseEnter = false;
-    gameUIManager.updateUIState(UIIDList.enterButton,resolveEnterBackgroundColor());
-    await postUserData(compDataState.currentTime);
+    return;
   }
+  
+  clearInterval(compDataState.intervalStorage);
+  compDataState.canUseEnter = false;
+  
+  gameUIManager.updateUIState(UIIDList.enterButton,resolveEnterBackgroundColor());
+  if (compDataState.guessUsed == UIConstants.gridSize.value){
+    await postUserData('UserFailedNoMoreGuesses');
+  }
+  else
+    await postUserData(compDataState.currentTime);
 }
 
 /**
@@ -287,6 +305,8 @@ function updateNowSelectedInputBox(){
     compDataState.previousSelected.classList.remove(UIConstants.gridSelectedClass.className);
   
   compDataState.previousSelected = UITree[`R${loc[1]}C${loc[0]}`];
+  if (!compDataState.previousSelected)
+    return;
   compDataState.previousSelected.classList.add(UIConstants.gridSelectedClass.className);
 }
 

@@ -131,6 +131,7 @@ key-button{
   color: var(--defaultFont);
   width: 8%;
   border-radius: 0.75vh;
+  cursor: pointer;
 }
 
 .completelyCorrect{

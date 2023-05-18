@@ -9,44 +9,49 @@ const passport = require('passport');
 const highscoreRoute = require('./routes/highScoreRoute');
 const word = require('./routes/Utility/wordUtils');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const app = express();
+const { readFileSync } = require('fs');
+const https = require('https');
+
 const port = process.env.PORT || 3000;
+const app = express();
 
-const configManger = require('./globalUtils/configManager');
+const configManager = require('./globalUtils/configManager');
 
-passport.use(new GoogleStrategy({
-  clientID: configManger.getChain('google.clientID'),
-  clientSecret: configManger.getChain('google.clientSecret'),
-  callbackURL: configManger.getChain('google.callbackURL')
-},
-(accessToken, refreshToken, profile, cb) => {
-  // This function will be called when the user has authenticated successfully
-  // You can access the user's profile data in the `profile` object
-  return cb(null, profile);
-}
-));
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: configManager.getChain('google.clientID'),
+      clientSecret: configManager.getChain('google.clientSecret'),
+      callbackURL: configManager.getChain('google.callbackURL'),
+    },
+    (accessToken, refreshToken, profile, cb) => {
+      // This function will be called when the user has authenticated successfully
+      // You can access the user's profile data in the `profile` object
+      return cb(null, profile);
+    }
+  )
+);
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
   cb(null, user);
 });
 
-passport.deserializeUser(function(obj, cb) {
+passport.deserializeUser(function (obj, cb) {
   cb(null, obj);
 });
 
 app.use(bodyParser.json());
 
-app.use(session({
-  secret: 'KEKW2017',
-  resave: false,
-  saveUninitialized: false
-}));
-
+app.use(
+  session({
+    secret: 'KEKW2017',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-//setInterval(word.createNewEvent,8.64*10^7)
 
 app.use(cors());
 
@@ -58,14 +63,20 @@ app.use(express.static('scripts'));
 app.use(express.static('styling'));
 app.use(express.static('resources'));
 app.use(express.static('images'));
-app.use('/Game',gameRoute);
-app.use('/Auth',authRoute);
-app.use('/Highscore',highscoreRoute);
+app.use('/Game', gameRoute);
+app.use('/Auth', authRoute);
+app.use('/Highscore', highscoreRoute);
 
 const newWord = word.createNewEvent();
 console.log(newWord);
 
+const options = {
+  key: readFileSync('configs/localhost.key'),
+  cert: readFileSync('configs/localhost.crt'),
+};
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+const server = https.createServer(options, app);
+
+server.listen(port, () => {
+  console.log(`listening on https://localhost:${port}`);
 });
