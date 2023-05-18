@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -10,7 +9,7 @@ const highscoreRoute = require('./routes/highScoreRoute');
 const word = require("./routes/Utility/wordUtils");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { readFileSync } = require('fs');
-const http = require('http');
+const https = require('https');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -70,8 +69,14 @@ app.use('/Highscore', highscoreRoute);
 const newWord = word.createNewEvent();
 console.log(newWord);
 
-const server = http.createServer(app);
+const options = {
+  key: readFileSync('configs/host.key'),
+  cert: readFileSync('configs/host.crt'),
+};
+
+
+const server = https.createServer(options, app);
 
 server.listen(port, () => {
-  console.log(`listening on http://localhost:${port}`);
+  console.log(`listening on https://localhost:${port}`);
 });
