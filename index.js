@@ -29,7 +29,7 @@ passport.use(new GoogleStrategy({
 passport.serializeUser(function(user, cb) {
   cb(null, user);
 });
-  
+
 passport.deserializeUser(function(obj, cb) {
   cb(null, obj);
 });
@@ -48,7 +48,7 @@ app.use(passport.session());
 
 //setInterval(word.createNewEvent,8.64*10^7)
 
-app.use(cors()); 
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.redirect('/Auth');
