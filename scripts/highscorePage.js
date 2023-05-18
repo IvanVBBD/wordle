@@ -1,38 +1,42 @@
+import { getHighScore, getWordOfTheDay } from './API.js';
+import { getRandomAnimalNames } from './randomAnimalNames.js';
+
+const boxes = document.getElementById('correctWordDisplay');
 const scoreBoard = document.getElementById('scoreBoard');
-const backButton = document.getElementById('backButton');
-const UserScoreRow = document.getElementById('userRow');
-const baseUrl = window.location.href.split('/').slice(0, 3).join('/');
+const timeDisplay = document.querySelector('.time p');
 
-const getScore =  async () => {
-  console.log(baseUrl);
-  let counter = 0;
-  let data = await fetch(baseUrl + '/' + 'Highscore' + '/' + 'scores');
-  data = await data.json();
-  data = data.highscore;
-  data.sort((a, b) => b.score - a.score);
-  data.map(x=>{
-    const newListRow= document.createElement('tr');
-    const newRankItem = document.createElement('td');
-    const newNameItem = document.createElement('td');
-    const newTimeItem = document.createElement('td');
-    counter++;
-    //newListItem.textContent = x.user_email + ' - ' + x.score
-    newRankItem.textContent = counter.toString();
-    newNameItem.textContent = x.user_email ;
-    newTimeItem.textContent = 'Time value'; //change to time attribute later
-    newListRow.appendChild(newRankItem);
-    newListRow.appendChild(newNameItem);
-    newListRow.appendChild(newTimeItem);
-    scoreBoard.appendChild(newListRow);
-  });
+const tableRowHeaders = `
+			<tr>
+				<th id="rankColumn">Rank</th>
+				<th id="nameColumn">Name</th>
 
+				<th id="timeColumn">
+					<img src="./timeIcon.svg" alt="Timer">
+					Time
+				</th>
+			</tr>`;
 
-};
+const userTimes = await getHighScore();
+const userNames = getRandomAnimalNames(5);
+const correctWord = (await getWordOfTheDay()).toUpperCase();
 
-getScore();
+console.log(userTimes);
+console.log(correctWord);
 
-//backButton.onclick = function() {
-//  console.log("we in here");
-//    window.location.href = baseUrl + "/Game";
-// };
+boxes.innerHTML = correctWord.split('').map((char)=>{
+  return `
+  <p class="green-box">${char}</p>
+  `;
+}).join('');
 
+let innerHTML = '';
+for (let i = 0; i < 5;i++){
+  innerHTML += `
+    <tr>
+      <td>${i+1}</td>
+      <td>${userNames[i]}</td>
+      <td>${userTimes[i]}</td>
+    </tr>
+  `;
+}
+scoreBoard.innerHTML = `${tableRowHeaders}${innerHTML}`;

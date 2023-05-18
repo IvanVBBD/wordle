@@ -1,24 +1,42 @@
+import { getHighScore, getWordOfTheDay } from './API.js';
+import { getRandomAnimalNames } from './randomAnimalNames.js';
+
+const boxes = document.getElementById('correctWordDisplay');
 const scoreBoard = document.getElementById('scoreBoard');
-const backButton = document.getElementById('backButton');
-const baseUrl = window.location.href.split('/').slice(0, 3).join('/');
+const timeDisplay = document.querySelector('.time p');
 
-const getScore =  async () => {
-  console.log(baseUrl);
-  let data = await fetch(`${baseUrl}/Highscore/scores`);
-  data = await data.json();
-  data = data.highscore;
-  data.sort((a, b) => b.score - a.score);
-  data.map(x=>{
-    const newListItem = document.createElement('li');
-    newListItem.textContent = x.user_email + ' - ' + x.score;
-    scoreBoard.appendChild(newListItem);
-  });
-};
+const tableRowHeaders = `
+			<tr>
+				<th id="rankColumn">Rank</th>
+				<th id="nameColumn">Name</th>
 
-getScore();
+				<th id="timeColumn">
+					<img src="./timeIcon.svg" alt="Timer">
+					Time
+				</th>
+			</tr>`;
 
-backButton.onclick = function() {
-  console.log('we in here');
-  window.location.href = baseUrl + '/Game';
-};
+const userTimes = await getHighScore();
+const userNames = getRandomAnimalNames(5);
+const correctWord = (await getWordOfTheDay()).toUpperCase();
 
+console.log(userTimes);
+console.log(correctWord);
+
+boxes.innerHTML = correctWord.split('').map((char)=>{
+  return `
+  <p class="green-box">${char}</p>
+  `;
+}).join('');
+
+let innerHTML = '';
+for (let i = 0; i < 5;i++){
+  innerHTML += `
+    <tr>
+      <td>${i+1}</td>
+      <td>${userNames[i]}</td>
+      <td>${userTimes[i]}</td>
+    </tr>
+  `;
+}
+scoreBoard.innerHTML = `${tableRowHeaders}${innerHTML}`;

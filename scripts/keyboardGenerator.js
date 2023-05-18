@@ -4,15 +4,15 @@ import UIStateManager from './UIStateManager.js';
 
 /**
  * Generates a keyboard on the given HTML element
- * @param {HTMLElement} targetLocation 
- * @param {Function} alphaClicksMeth 
- * @param {Object} UITree 
- * @param {Function} backClickMeth 
- * @param {UIStateManager} gameUIManager 
- * @param {Function} alphaKeyUIUpdateMeth 
+ * @param {HTMLElement} targetLocation
+ * @param {Function} alphaClicksMeth
+ * @param {Object} UITree
+ * @param {Function} backClickMeth
+ * @param {UIStateManager} gameUIManager
+ * @param {Function} alphaKeyUIUpdateMeth
  */
 export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backClickMeth,gameUIManager,alphaKeyUIUpdateMeth){
-  
+
   let HTMLKeys = '';
   let HTMLOut = '';
   const buttonIDs = [];
@@ -30,9 +30,9 @@ export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backCl
       </key-button>
     `;
     }).join('');
-    const backButHTML = `      
+    const backButHTML = `
       <key-button id="${UIIDList.buttonBackSpace}" class="iconButton" tabindex="${tabIndex}">
-        
+
       </key-button>
     `;
     HTMLOut += `<div class="keyRow">${HTMLKeys}${(rowCount >= 2)? backButHTML :'' }</div>`;

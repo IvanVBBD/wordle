@@ -89,7 +89,7 @@ const UIConstants = {
     /** @type {string} */
     wrong: 'completelyWrong'
   },
-   
+
   gridSize:{
     /** @type {string} */
     varName: '--gridSize',

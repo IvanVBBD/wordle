@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
+@import url('https://fonts.cdnfonts.com/css/satoshi');
 *{
   margin: 0;
   padding: 0;
-  font-family: 'Kosugi Maru', sans-serif;
+  font-family: 'Satoshi';
   transition: 0.75s;
 }
 
@@ -15,7 +15,7 @@ body{
 }
 
 :root{
-  --plainBackground: #232323;
+  --plainBackground: #777575;
   --bigBackground: #F2F8F8;
   --buttonFontColor:white;
   --completeCorrect: #53e485;
@@ -31,7 +31,9 @@ body{
   --emptyInputBGColor: #C4CED8;
   --defaultButtonBGColor: #C4CED8;
   --activeInputBlockBGColor: #454545;
-
+  --leaderBoardBGColor: #047575;
+  --leaderBoardFontColor: white;
+  --rankingNumberBGColor: #109999;
 }
 
 .round{

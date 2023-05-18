@@ -60,6 +60,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(express.static('scripts'));
+app.use(express.static('images'));
 app.use(express.static('styling'));
 app.use(express.static('resources'));
 app.use(express.static('images'));

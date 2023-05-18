@@ -3,13 +3,12 @@ import * as UIHelpers from './UIHelpers.js';
 import { UIConstants,UIIDList } from './gameUIConstants.js';
 import genKeyboard from './keyboardGenerator.js';
 import generateInputGrid from './generateInputGrid.js';
-import getWordOfTheDay from './getWordOfTheDay.js';
 import words from './validWords.js';
-import postUserData from './uploadUserScore.js';
+import { getWordOfTheDay, postUserData }  from './API.js';
 import {alphaBGUpdateObject, LetterNode} from './types.js';
 
 //Game data state being display and what is used for logic
-const compDataState = { 
+const compDataState = {
   /** @type {boolean} */
   colorStateLight:true,
   /** @type {boolean} */
@@ -121,7 +120,7 @@ function gridIndexToCord(){
 }
 
 function bumpGridIndex(enterClick){
-  
+
   if (! (enterClick || compDataState.activeGridInput == 0 || (compDataState.activeGridInput+1) % UIConstants.gridSize.value))
     return;
   compDataState.activeGridInput++;
@@ -130,8 +129,8 @@ function bumpGridIndex(enterClick){
 }
 
 /**
- * Unbumps the 
- * @returns 
+ * Unbumps the
+ * @returns
  */
 function unBumpIndex(){
   if (compDataState.activeGridInput <= 0)
@@ -163,9 +162,9 @@ function getInputString(){
 
 /**
  * Checks the user input against the received value and updating the GUI
- * @param {string} userWord 
- * @param {string} gottenWord 
- * @param {number} row 
+ * @param {string} userWord
+ * @param {string} gottenWord
+ * @param {number} row
  */
 function checkEnteredValue(gottenWord,row){
   let allCharCorrect = true;
@@ -190,20 +189,20 @@ function checkEnteredValue(gottenWord,row){
       currentUIState.colorState = UIConstants.gridDisplayItemState.wrong;
       allCharCorrect = false;
     }
-    
+
     gameUIManager.updateUIState(UIID,currentUIState);
     gameUIManager.updateUIState(buttonID, {
       newColor:currentUIState.colorState,
       htmlElem: UITree[buttonID]
     });
   }
-  
+
   return allCharCorrect;
 }
 
 /**
  * Calls does game logic and maybe call the postDataMethod
- * @returns 
+ * @returns
  */
 async function enterClick(){
   if (!compDataState.canUseEnter)
@@ -217,10 +216,10 @@ async function enterClick(){
     bumpGridIndex(true);
     return;
   }
-  
+
   clearInterval(compDataState.intervalStorage);
   compDataState.canUseEnter = false;
-  
+
   gameUIManager.updateUIState(UIIDList.enterButton,resolveEnterBackgroundColor());
   if (compDataState.guessUsed == UIConstants.gridSize.value){
     await postUserData('UserFailedNoMoreGuesses');
@@ -247,7 +246,7 @@ function alphaBGUpdate({newColor,htmlElem}){
  */
 function resolveEnterBackgroundColor(){
   const colorpallet = (compDataState.colorStateLight)? UIConstants.enterButton.lightmode: UIConstants.enterButton.darkmode;
-  return (compDataState.canUseEnter)?colorpallet.enable:colorpallet.disabled; 
+  return (compDataState.canUseEnter)?colorpallet.enable:colorpallet.disabled;
 }
 
 /**
@@ -261,7 +260,7 @@ function updateButtonBackground(newBackgroundColor){
 
 /**
  * event which triggers when a key is clicked
- * @param {string} key 
+ * @param {string} key
  */
 function alphaKeyClick(key){
   /** @type {number[]} */
@@ -275,7 +274,7 @@ function alphaKeyClick(key){
   currentState.letterValue = key;
 
   gameUIManager.updateUIState(accessUIID, currentState);
-  bumpGridIndex(false);  
+  bumpGridIndex(false);
 
   compDataState.canUseEnter = isValidWord(getInputString());
 
@@ -295,7 +294,7 @@ function backButtonClick(){
   currentState.letterValue = '';
 
   gameUIManager.updateUIState(accessUIID, currentState);
-  
+
   unBumpIndex();
 }
 
@@ -303,7 +302,7 @@ function updateNowSelectedInputBox(){
   const loc = gridIndexToCord();
   if (compDataState.previousSelected)
     compDataState.previousSelected.classList.remove(UIConstants.gridSelectedClass.className);
-  
+
   compDataState.previousSelected = UITree[`R${loc[1]}C${loc[0]}`];
   if (!compDataState.previousSelected)
     return;
