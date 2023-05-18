@@ -22,7 +22,7 @@ passport.use(
     {
       clientID: configManager.getChain('google.clientID'),
       clientSecret: configManager.getChain('google.clientSecret'),
-      callbackURL: configManager.getChain('google.callbackURL'),
+      callbackURL: port === process.env.PORT ? configManager.getChain("google.callbackURLdeployement") : configManager.getChain('google.callbackURL'),
     },
     (accessToken, refreshToken, profile, cb) => {
       // This function will be called when the user has authenticated successfully
@@ -74,6 +74,8 @@ const options = {
   key: readFileSync('configs/localhost.key'),
   cert: readFileSync('configs/localhost.crt'),
 };
+
+console.log("pog we here");
 
 const server = https.createServer(options, app);
 
