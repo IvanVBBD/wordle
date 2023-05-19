@@ -9,8 +9,7 @@ const highscoreRoute = require('./routes/highScoreRoute');
 const word = require('./routes/Utility/wordUtils');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { readFileSync } = require('fs');
-const https = require('https');
-const configManger = require('./globalUtils/configManager');
+const http = require('http');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -71,14 +70,8 @@ app.use('/Highscore', highscoreRoute);
 const newWord = word.createNewEvent();
 console.log(newWord);
 
-const options = {
-  key: readFileSync('configs/host.key'),
-  cert: readFileSync('configs/host.crt'),
-};
-
-
-const server = https.createServer(options, app);
+const server = http.createServer(app);
 
 server.listen(port, () => {
-  console.log(`listening on https://localhost:${port}`);
+  console.log(`listening on http://localhost:${port}`);
 });
