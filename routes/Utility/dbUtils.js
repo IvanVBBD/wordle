@@ -100,6 +100,7 @@
 // module.exports = { executeQuery };
 
 const sql = require('mssql');
+
 const config = {
   user: 'wordle-game',
   password: 'Admin1234',
@@ -111,16 +112,25 @@ const config = {
   },
 };
 
+// Create a connection pool with the specified configuration
+const pool = new sql.ConnectionPool(config);
+
 async function executeQuery(sqlQuery) {
   try {
-    await sql.connect(config);
-    const result = await sql.query(sqlQuery);
-    console.log(result.recordset);
-    return result.recordset
+    // Check if the connection pool is already connected
+    if (pool.connected) {
+      const result = await pool.request().query(sqlQuery);
+      console.log(result.recordset);
+      return result.recordset;
+    } else {
+      // If not connected, establish a new connection from the pool
+      const connection = await pool.connect();
+      const result = await connection.request().query(sqlQuery);
+      console.log(result.recordset);
+      return result.recordset;
+    }
   } catch (err) {
     console.error(err);
-  } finally {
-    sql.close();
   }
 }
 
