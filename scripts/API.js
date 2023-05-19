@@ -8,7 +8,7 @@ const baseUrl = window.location.href.split('/').slice(0, 3).join('/');
  */
 
 export async function getWordOfTheDay() {
-  if (UIConstants.APILocalMode)
+  if (UIConstants.APILocalMode == true)
     return 'Plant';
 
   const request = await fetch(`${baseUrl}/Game/GetChallenge`);
@@ -24,7 +24,8 @@ export async function getWordOfTheDay() {
  */
 export async function postUserData(time) {
 
-  if (UIConstants.APILocalMode) {
+  if (UIConstants.APILocalMode == true)
+  {
     location.href = `${baseUrl}/Highscore`;
     console.log('This is suppose to post the user data');
     return true;
@@ -55,7 +56,7 @@ export async function postUserData(time) {
 
 
 export async function getHighScore(){
-  if (UIConstants.APILocalMode)
+  if (UIConstants.APILocalMode == true)
     return [
       '10:00',
       '15:00',
