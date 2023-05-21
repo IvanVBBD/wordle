@@ -24,7 +24,8 @@ const compDataState = {
   /** @type {number} */
   intervalStorage: null,
   /** @type {number} */
-  guessUsed:0
+  guessUsed:0,
+  correctWord: (await getWordOfTheDay()).toUpperCase()
 };
 function setUpdateGridSize(){
   /** @type { HTMLElement } */
@@ -143,7 +144,7 @@ function unBumpIndex(){
 }
 
 function isValidWord(userWord){
-  return words.includes(userWord.toLowerCase());
+  return words.includes(userWord.toLowerCase()) || compDataState.correctWord == userWord;
 }
 
 /**
@@ -208,9 +209,8 @@ async function enterClick(){
   if (!compDataState.canUseEnter)
     return;
   compDataState.guessUsed++;
-  const correctWord = (await getWordOfTheDay()).toUpperCase();
   const loc = gridIndexToCord();
-  const wasCorrect = checkEnteredValue(correctWord,loc[1]);
+  const wasCorrect = checkEnteredValue(compDataState.correctWord,loc[1]);
   if (!wasCorrect && (compDataState.guessUsed < UIConstants.gridSize.value ))
   {
     bumpGridIndex(true);

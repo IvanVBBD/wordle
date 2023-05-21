@@ -106,7 +106,7 @@ const UIConstants = {
     /** @type {string} */
     varName: '--brightnessValue'
   },
-  APILocalMode: false
+  APILocalMode: false,
 };
 
 /**

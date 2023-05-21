@@ -8,9 +8,12 @@
       "clientID": "1014783924932-cvq26bk7cd6dfmjepflgm5f5h7jjpej6.apps.googleusercontent.com",
       "clientSecret": "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",
       "callbackURL": "https://ec2-174-129-181-143.compute-1.amazonaws.com:3000/auth/google/callback",
-      "callbackURLdeployement": "https://wordle-game.azurewebsites.net/Game"
+      "callbackURLdeployement": "https://wordle-game.azurewebsites.net/Game",
+      "localCallBackURL":"http://localhost:3000/auth/google/callback",
+      "localcallbackURLdeployement":"http://localhost:3000/Game"
     },
     "developerMode":{
-      "noAuth":true
-    }
+      "noAuth":false
+    },
+    "localDebug": false
 }

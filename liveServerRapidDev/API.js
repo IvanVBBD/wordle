@@ -9,7 +9,7 @@ const baseUrl = window.location.href.split('/').slice(0, 3).join('/');
 
 export async function getWordOfTheDay() {
   if (UIConstants.APILocalMode == true)
-    return 'Plant';
+    return 'Swore';
 
   const request = await fetch(`${baseUrl}/Game/GetChallenge`);
   const data = await request.json();
@@ -41,12 +41,9 @@ export async function postUserData(time) {
       duration: (time.length > 5) ? '99:99:99' : `00:${time}`
     }) // Replace 'data' with your actual request payload
   })
-    .then(response => response.json())
-    .then(data => {
+    .then(() => {
       // Handle the response data
-      console.log(data);
       location.href = `${baseUrl}/Highscore`;
-
     })
     .catch(error => {
       // Handle any errors
@@ -57,20 +54,68 @@ export async function postUserData(time) {
 
 export async function getHighScore(){
   if (UIConstants.APILocalMode == true)
-    return [
-      '10:00',
-      '15:00',
-      '25:00',
-      '05:00',
-      '02:00',
-      '69:00'
-    ].sort();
+    return {
+      'highScores': [
+        {
+          'event_id': 116,
+          'user_id': 7,
+          'user_email': 'lolMail@gmail.com',
+          'word': 'panda',
+          'duration': '1970-01-01T00:00:06.000Z'
+        },
+        {
+          'event_id': 116,
+          'user_id': 8,
+          'user_email': 'lolMail@gmail.com',
+          'word': 'panda',
+          'duration': '1970-01-01T00:00:10.000Z'
+        },
+        {
+          'event_id': 116,
+          'user_id': 9,
+          'user_email': 'lolMail@gmail.com',
+          'word': 'panda',
+          'duration': '1970-01-01T00:00:17.000Z'
+        },
+        {
+          'event_id': 116,
+          'user_id': 2,
+          'user_email': 'lolMail@gmail.com',
+          'word': 'panda',
+          'duration': '1970-01-01T00:00:38.000Z'
+        },
+        {
+          'event_id': 116,
+          'user_id': 3,
+          'user_email': 'lolMail@gmail.com',
+          'word': 'panda',
+          'duration': '1970-01-01T00:09:14.000Z'
+        },
+        {
+          'event_id': 116,
+          'user_id': 4,
+          'user_email': 'lolMail@gmail.com',
+          'word': 'panda',
+          'duration': '1970-01-01T00:10:06.000Z'
+        }
+      ],
+      'userScore': {
+        'event_id': 116,
+        'user_id': 7,
+        'user_email': 'lolMail@gmail.com',
+        'word': 'panda',
+        'duration': '1970-01-01T00:00:06.000Z'
+      },
+      'userRank': {
+        'UserAbove': 0
+      }
+    };
 
-  console.log(baseUrl);
   let data = await fetch(`${baseUrl}/Highscore/scores`);
   data = await data.json();
-  data = data.highscore;
-  data.sort();
+  console.log(data);
+  // data = data.highscore;
+  // data.sort();
   return data;
 }
 

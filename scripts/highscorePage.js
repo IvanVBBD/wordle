@@ -16,12 +16,16 @@ const tableRowHeaders = `
 				</th>
 			</tr>`;
 
-const userTimes = await getHighScore();
+const displayData = await getHighScore();
+
+const makeTwo= (value)=>{
+  return ( `${value}`.length >= 2)? `${value}` : `0${value}`;
+};
+
+console.log(displayData);
+
 const userNames = getRandomAnimalNames(5);
 const correctWord = (await getWordOfTheDay()).toUpperCase();
-
-console.log(userTimes);
-console.log(correctWord);
 
 boxes.innerHTML = correctWord.split('').map((char)=>{
   return `
@@ -30,13 +34,28 @@ boxes.innerHTML = correctWord.split('').map((char)=>{
 }).join('');
 
 let innerHTML = '';
-for (let i = 0; i < 5;i++){
+for (let i = 0; i < Math.min(displayData.highScores.length,5)   ;i++){
+  const time = new Date(displayData.highScores[i].duration);
   innerHTML += `
     <tr>
       <td>${i+1}</td>
-      <td>${userNames[i]}</td>
-      <td>${userTimes[i]}</td>
+      <td>${(displayData.highScores[i].user_id === displayData.userScore.user_id)?'You':userNames[i]}</td>
+      <td>${makeTwo(time.getMinutes())}:${makeTwo(time.getSeconds())}</td>
     </tr>
   `;
 }
+
+let time = new Date(displayData.userScore.duration);
+
+innerHTML +=`
+<tr id="userRow">
+  <td>${displayData.userRank.UserAbove+1}</td>
+  <td>You</td>
+  <td>${makeTwo(time.getMinutes())}:${makeTwo(time.getSeconds())}</td>
+</tr>
+`;
 scoreBoard.innerHTML = `${tableRowHeaders}${innerHTML}`;
+
+time = new Date(displayData.userScore.duration);
+
+timeDisplay.innerHTML = `${makeTwo(time.getMinutes())}:${makeTwo(time.getSeconds())}`;

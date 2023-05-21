@@ -8,7 +8,6 @@ const passport = require('passport');
 const highscoreRoute = require('./routes/highScoreRoute');
 const word = require('./routes/Utility/wordUtils');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const { readFileSync } = require('fs');
 const http = require('http');
 
 const port = process.env.PORT || 3000;
@@ -16,12 +15,22 @@ const app = express();
 
 const configManager = require('./globalUtils/configManager');
 
+function resolveDeployedCallbacks(){
+  return (port === process.env.PORT) ? configManager.getChain('google.callbackURLdeployement') : configManager.getChain('google.callbackURL');
+}
+
+function resolveLocalCallBacks(){
+  return (port === process.env.PORT) ? configManager.getChain('google.localcallbackURLdeployement') : configManager.getChain('google.localCallBackURL');
+}
+
+console.log((configManager.get('localDebug'))?resolveLocalCallBacks(): resolveDeployedCallbacks());
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: configManager.getChain('google.clientID'),
       clientSecret: configManager.getChain('google.clientSecret'),
-      callbackURL: port === process.env.PORT ? configManager.getChain('google.callbackURLdeployement') : configManager.getChain('google.callbackURL'),
+      callbackURL: (configManager.get('localDebug'))?resolveLocalCallBacks(): resolveDeployedCallbacks(),
     },
     (accessToken, refreshToken, profile, cb) => {
       // This function will be called when the user has authenticated successfully

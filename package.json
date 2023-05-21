@@ -6,7 +6,9 @@
   "scripts": {
     "lint:fix": "npm run lint -- --fix",
     "start": "node index.js",
-    "integrate": "node deploy.js"
+    "deploy": "node deploy.js",
+    "snd": "npm run deploy && npm start",
+    "go": "npm i && npm run deploy && npm start"
   },
   "repository": {
     "type": "git",
