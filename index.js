@@ -66,8 +66,9 @@ app.use('/Game', gameRoute);
 app.use('/Auth', authRoute);
 app.use('/Highscore', highscoreRoute);
 
-const newWord = word.createNewEvent();
-console.log(newWord);
+const millisecondsIn24Hours = 24 * 60 * 60 * 1000;
+word.createNewEvent();
+setInterval(word.createNewEvent,millisecondsIn24Hours)
 
 const server = http.createServer(app);
 
