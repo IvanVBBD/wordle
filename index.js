@@ -6,9 +6,8 @@ const authRoute = require('./routes/authRoute');
 const session = require('express-session');
 const passport = require('passport');
 const highscoreRoute = require('./routes/highScoreRoute');
-const word = require("./routes/Utility/wordUtils");
+const word = require('./routes/Utility/wordUtils');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const { readFileSync } = require('fs');
 const http = require('http');
 
 const port = process.env.PORT || 3000;
@@ -16,12 +15,22 @@ const app = express();
 
 const configManager = require('./globalUtils/configManager');
 
+function resolveDeployedCallbacks(){
+  return configManager.getChain('google.callbackURLdeployement');
+}
+
+function resolveLocalCallBacks(){
+  return configManager.getChain('google.localcallbackURLdeployement');
+}
+
+console.log((configManager.get('localDebug'))?resolveLocalCallBacks(): resolveDeployedCallbacks());
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: configManager.getChain('google.clientID'),
       clientSecret: configManager.getChain('google.clientSecret'),
-      callbackURL: port === process.env.PORT ? configManager.getChain("google.callbackURLdeployement") : configManager.getChain('google.callbackURL'),
+      callbackURL: (configManager.get('localDebug'))?resolveLocalCallBacks(): resolveDeployedCallbacks(),
     },
     (accessToken, refreshToken, profile, cb) => {
       // This function will be called when the user has authenticated successfully
@@ -59,6 +68,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(express.static('scripts'));
+app.use(express.static('images'));
 app.use(express.static('styling'));
 app.use(express.static('resources'));
 app.use(express.static('images'));
@@ -68,7 +78,7 @@ app.use('/Highscore', highscoreRoute);
 
 const millisecondsIn24Hours = 24 * 60 * 60 * 1000;
 word.createNewEvent();
-setInterval(word.createNewEvent,millisecondsIn24Hours)
+setInterval(word.createNewEvent,millisecondsIn24Hours);
 
 const server = http.createServer(app);
 

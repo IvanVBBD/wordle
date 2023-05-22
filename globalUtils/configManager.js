@@ -27,11 +27,20 @@ module.exports = class configManager{
     fs.writeFileSync(path.join(__dirname,configPath),JSON.stringify(configManager.config, null, 4));
   }
 
+  /**
+   * 
+   * @param {string[]} chainLinks 
+   * @returns 
+   */
   static getChainEnd(chainLinks){
     let clasp  = configManager.config;
-    chainLinks.forEach( link => {
+    for (let i = 0; i < chainLinks.length;i++)
+    {
+      const link = chainLinks[i];
+      if (clasp[`${link}`] == undefined)
+        return undefined;
       clasp = clasp[`${link}`];
-    });
+    }
     return clasp;
   }
 

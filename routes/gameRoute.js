@@ -8,7 +8,7 @@ const gameRouter = express.Router();
 //auth.isLoggedIn,
 
 gameRouter.get('/',auth.isLoggedIn, async function (req, res) {
-  const email = req.user.emails[0].value;
+  const email = req.user?.emails[0]?.value;
   auth.checkUserProfile(email);
   played = await gameUtils.HasPlayedGame(email);
   if(played[0].played <= 0){
@@ -32,7 +32,7 @@ gameRouter.post('/SaveGame',auth.isLoggedIn, async function(req,res) {
   const data = req.body;
   await gameUtils.SaveGame(data.duration, req.user.emails[0].value);
   console.log(data);
-  res.redirect("/Highscore");
+  res.redirect('/Highscore');
 });
 
 module.exports = gameRouter;

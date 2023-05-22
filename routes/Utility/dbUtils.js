@@ -16,21 +16,27 @@ const pool = new sql.ConnectionPool(config);
 
 async function executeQuery(sqlQuery) {
   try {
+    let result = undefined;
     // Check if the connection pool is already connected
-    if (pool.connected) {
-      const result = await pool.request().query(sqlQuery);
-      console.log(result.recordset);
-      return result.recordset;
-    } else {
-      // If not connected, establish a new connection from the pool
-      const connection = await pool.connect();
-      const result = await connection.request().query(sqlQuery);
-      console.log(result.recordset);
-      return result.recordset;
-    }
+    if (!pool.connected) 
+      await pool.connect();
+      
+    result = await pool.request().query(sqlQuery);
+    console.log(result.recordset);
+    return result.recordset;
   } catch (err) {
     console.error(err);
   }
 }
 
-module.exports = { executeQuery };
+function checkPoolStatus(){
+  console.log(pool.connected);
+  return pool.connected;
+}
+
+function closeConnection(){
+  if (pool.connected)
+    pool.close();
+}
+
+module.exports = { executeQuery,checkPoolStatus,closeConnection };
