@@ -31,4 +31,18 @@ async function HighScores(){
     }
 }
 
-module.exports = {SaveGame, HighScores};
+async function HasPlayedGame(email){
+  try{
+      const hasPlayedQuery = `select count(*) as played from USERS
+      INNER JOIN EVENTRESPONSES ON USERS.user_id = EVENTRESPONSES.user_id
+      INNER JOIN EVENTS ON EVENTS.event_id = EVENTRESPONSES.event_id
+      WHERE EVENTS.active = 1 and USERS.user_email = '${email}'`;
+      const result = await DB.executeQuery(hasPlayedQuery);
+      return result;
+      
+  } catch (error) {
+      console.log("ooops user error occured: " + error);
+  }
+}
+
+module.exports = {SaveGame, HighScores, HasPlayedGame};
