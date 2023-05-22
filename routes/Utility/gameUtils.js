@@ -10,7 +10,7 @@ async function SaveGame(duration,email){
     let userId = await DB.executeQuery(userIDQuery);
     const insertQuery = 'INSERT INTO EVENTRESPONSES (event_id,user_id,duration) VALUES ('+eventId[0].event_id+','+userId[0].user_id+',\''+duration+'\')';
     await DB.executeQuery(insertQuery);
-        
+
   } catch (error) {
     console.log('ooops user error occured: ' + error);
   }
@@ -26,7 +26,7 @@ async function HighScores(){
         ORDER BY EVENTRESPONSES.duration ASC;`;
     const result = await DB.executeQuery(highScoreQuery);
     return result;
-        
+
   } catch (error) {
     console.log('ooops user error occured: ' + error);
   }
@@ -42,7 +42,7 @@ async function getUserScore(email){
     WHERE EVENTS.ACTIVE = 1 AND USERS.user_id = ${userID[0].user_id}`;
     const userScore = await DB.executeQuery(userScoreQuery);
     return userScore;
-        
+
   } catch (error) {
     console.log('ooops user error occured: ' + error);
   }
@@ -55,15 +55,28 @@ async function getUserRank(userID){
     WHERE EVENTS.ACTIVE = 1 AND EVENTRESPONSES.duration > (
       SELECT EVENTRESPONSES.duration FROM EVENTRESPONSES
       INNER JOIN EVENTS ON EVENTRESPONSES.event_id = EVENTS.event_id
-      WHERE EVENTS.ACTIVE = 1 AND EVENTRESPONSES.user_id = ${userID} 
+      WHERE EVENTS.ACTIVE = 1 AND EVENTRESPONSES.user_id = ${userID}
     )`;
     const userScore = await DB.executeQuery(userScoreQuery);
     return userScore;
-        
+
   } catch (error) {
     console.log('ooops user error occured: ' + error);
   }
 }
 
+async function HasPlayedGame(email){
+  try{
+    const hasPlayedQuery = `select count(*) as played from USERS
+      INNER JOIN EVENTRESPONSES ON USERS.user_id = EVENTRESPONSES.user_id
+      INNER JOIN EVENTS ON EVENTS.event_id = EVENTRESPONSES.event_id
+      WHERE EVENTS.active = 1 and USERS.user_email = '${email}'`;
+    const result = await DB.executeQuery(hasPlayedQuery);
+    return result;
 
-module.exports = {SaveGame, HighScores, getUserScore, getUserRank};
+  } catch (error) {
+    console.log('ooops user error occured: ' + error);
+  }
+}
+
+module.exports = { SaveGame, HighScores, HasPlayedGame, getUserRank, getUserScore };

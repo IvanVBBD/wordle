@@ -16,11 +16,11 @@ const app = express();
 const configManager = require('./globalUtils/configManager');
 
 function resolveDeployedCallbacks(){
-  return (port === process.env.PORT) ? configManager.getChain('google.callbackURLdeployement') : configManager.getChain('google.callbackURL');
+  return configManager.getChain('google.callbackURLdeployement');
 }
 
 function resolveLocalCallBacks(){
-  return (port === process.env.PORT) ? configManager.getChain('google.localcallbackURLdeployement') : configManager.getChain('google.localCallBackURL');
+  return configManager.getChain('google.localcallbackURLdeployement');
 }
 
 console.log((configManager.get('localDebug'))?resolveLocalCallBacks(): resolveDeployedCallbacks());
@@ -78,7 +78,7 @@ app.use('/Highscore', highscoreRoute);
 
 const millisecondsIn24Hours = 24 * 60 * 60 * 1000;
 word.createNewEvent();
-setInterval(word.createNewEvent,millisecondsIn24Hours)
+setInterval(word.createNewEvent,millisecondsIn24Hours);
 
 const server = http.createServer(app);
 

@@ -53,7 +53,7 @@ export async function postUserData(time) {
 
 
 export async function getHighScore(){
-  if (UIConstants.APILocalMode == true)
+  if (UIConstants.APILocalMode === true)
     return {
       'highScores': [
         {
