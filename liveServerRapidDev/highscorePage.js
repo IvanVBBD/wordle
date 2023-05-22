@@ -45,6 +45,16 @@ for (let i = 0; i < Math.min(displayData.highScores.length,5)   ;i++){
   `;
 }
 
+for (let i = Math.min(displayData.highScores.length,5); i <  5  ;i++){
+  innerHTML += `
+    <tr>
+      <td><p class="noData">...</p></td>
+      <td><p class="noData">...</p></td>
+      <td><p class="noData">...</p></td>
+    </tr>
+  `;
+}
+
 let time = new Date(displayData.userScore.duration);
 
 innerHTML +=`
