@@ -10,7 +10,7 @@ authRouter.get('/', async function (req, res) {
     const email = req.user.emails[0].value;
     played = await gameUtils.HasPlayedGame(email);
     if(played[0].played <= 0){
-      res.redirect('/Game');
+      res.redirect('/HowToPlay');
     }
     else{
       res.redirect('Highscore');
@@ -30,7 +30,7 @@ authRouter.get('/google/callback', passport.authenticate('google', { failureRedi
     played = await gameUtils.HasPlayedGame(email);
     console.log('We got here');
     if(played[0].played <= 0){
-      res.redirect('/Game');
+      res.redirect('/HowToPlay');
     }
     else{
       res.redirect('Highscore');

@@ -59,6 +59,11 @@ function updateThemeIcon(ThemeIconURL){
   rootVars.style.setProperty(UIConstants.icons.themeIcon.iconVar,ThemeIconURL);
 }
 
+function updateValidityIndicator(color){
+  let rootVars = document.querySelector(':root');
+  rootVars.style.setProperty(UIConstants.validityIndicator.varName,color);
+}
+
 //Create UIStateManager instance for this page
 const gameUIManager = new UIStateManager();
 
@@ -73,6 +78,9 @@ gameUIManager.addListenerToUIUpdate(UIIDList.logo,updateLogo );
 // Figure it out your smart enough
 gameUIManager.addUIState(UIIDList.colorToggle,UIConstants.logo.lightMode);
 gameUIManager.addListenerToUIUpdate(UIIDList.colorToggle,updateThemeIcon );
+
+gameUIManager.addUIState(UIIDList.validityIndicator ,UIConstants.validityIndicator.invalidColor);
+gameUIManager.addListenerToUIUpdate(UIIDList.validityIndicator,updateValidityIndicator );
 
 // Method which is triggered on the onclick event of the theme icon click
 function onThemeSwitchClick(){
@@ -276,7 +284,9 @@ function alphaKeyClick(key){
   gameUIManager.updateUIState(accessUIID, currentState);
   bumpGridIndex(false);
 
-  compDataState.canUseEnter = isValidWord(getInputString());
+  const validWord = isValidWord(getInputString());
+  compDataState.canUseEnter = validWord;
+  gameUIManager.updateUIState(UIIDList.validityIndicator,(validWord)?UIConstants.validityIndicator.validColor: UIConstants.validityIndicator.invalidColor);
 
   gameUIManager.updateUIState(UIIDList.mainEnterButton,resolveEnterBackgroundColor());
 }
@@ -291,11 +301,14 @@ function backButtonClick(){
   const accessUIID = `R${locate[1]}C${locate[0]}`;
 
   const currentState = gameUIManager.getUIState(accessUIID);
-  currentState.letterValue = '';
+  if (currentState.letterValue === '')
+    unBumpIndex();
+  else
+    currentState.letterValue = '';
 
   gameUIManager.updateUIState(accessUIID, currentState);
+  gameUIManager.updateUIState(UIIDList.validityIndicator,UIConstants.validityIndicator.invalidColor);
 
-  unBumpIndex();
 }
 
 function updateNowSelectedInputBox(){
@@ -329,6 +342,7 @@ export function activateUI(){
   const liveComponentList = [
     new UIHelpers.DOD(UIIDList.timeCount),
     new UIHelpers.DOD(UIIDList.keyboardContainer),
+    new UIHelpers.DOD(UIIDList.validityIndicator)
   ];
 
   UIHelpers.locateUI(UITree,liveComponentList);
