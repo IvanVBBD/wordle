@@ -35,7 +35,7 @@ export default function genKeyboard(targetLocation,alphaClicksMeth,UITree,backCl
 
       </key-button>
     `;
-    HTMLOut += `<div class="keyRow">${HTMLKeys}${(rowCount >= 2)? backButHTML :'' }</div>`;
+    HTMLOut += `<section class="keyRow">${HTMLKeys}${(rowCount >= 2)? backButHTML :'' }</section>`;
     rowCount++;
   });
   targetLocation.innerHTML = HTMLOut;

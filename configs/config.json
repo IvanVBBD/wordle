@@ -1,6 +1,6 @@
 {
     "server": {
-        "port": 3000
+      "port": 3000
     },
     "database": "Driver={ODBC Driver 17 for SQL Server};Server=wordle-db.c68ft3jbsleb.eu-west-1.rds.amazonaws.com;Database=WordleApp;Uid=admin;Pwd=admin1234;",
     "databaseTedious": "Server=wordle-db.c68ft3jbsleb.eu-west-1.rds.amazonaws.com;Database=WordleApp;User Id=admin;Password=admin1234;",
