@@ -1,9 +1,29 @@
 import { getHighScore, getWordOfTheDay } from './API.js';
 import { getRandomAnimalNames } from './randomAnimalNames.js';
 
+/**
+ * 
+ * @param {string} duration 
+ */
+function resolveTime(duration){
+  const makeTwo= (value)=>{
+    return ( `${value}`.length >= 2)? `${value}` : `0${value}`;
+  };
+  
+  if (duration.indexOf('59:59')>=0)
+    return '-:-';
+  
+  const time = new Date(duration);
+  return `${makeTwo(time.getMinutes())}:${makeTwo(time.getSeconds())}`;
+}
+
 const boxes = document.getElementById('correctWordDisplay');
 const scoreBoard = document.getElementById('scoreBoard');
 const timeDisplay = document.querySelector('.time p');
+const resultMessage = document.getElementById('resultMessage');
+
+/** @type {HTMLImageElement} */
+const outcomeIcon = document.getElementById('outcomeIcon');
 
 const tableRowHeaders = `
 			<tr>
@@ -18,10 +38,6 @@ const tableRowHeaders = `
 
 const displayData = await getHighScore();
 
-const makeTwo= (value)=>{
-  return ( `${value}`.length >= 2)? `${value}` : `0${value}`;
-};
-
 console.log(displayData);
 
 const userNames = getRandomAnimalNames(5);
@@ -35,12 +51,11 @@ boxes.innerHTML = correctWord.split('').map((char)=>{
 
 let innerHTML = '';
 for (let i = 0; i < Math.min(displayData.highScores.length,5)   ;i++){
-  const time = new Date(displayData.highScores[i].duration);
   innerHTML += `
     <tr>
       <td>${i+1}</td>
       <td>${(displayData.highScores[i].user_id === displayData.userScore.user_id)?'You':userNames[i]}</td>
-      <td>${makeTwo(time.getMinutes())}:${makeTwo(time.getSeconds())}</td>
+      <td>${resolveTime(displayData.highScores[i].duration)}</td>
     </tr>
   `;
 }
@@ -55,17 +70,19 @@ for (let i = Math.min(displayData.highScores.length,5); i <  5  ;i++){
   `;
 }
 
-let time = new Date(displayData.userScore.duration);
-
 innerHTML +=`
 <tr id="userRow">
   <td>${displayData.userRank.UserAbove+1}</td>
   <td>You</td>
-  <td>${makeTwo(time.getMinutes())}:${makeTwo(time.getSeconds())}</td>
+  <td>${resolveTime(displayData.userScore.duration)}</td>
 </tr>
 `;
 scoreBoard.innerHTML = `${tableRowHeaders}${innerHTML}`;
 
-time = new Date(displayData.userScore.duration);
+timeDisplay.innerHTML = `${resolveTime(displayData.userScore.duration)}`;
 
-timeDisplay.innerHTML = `${makeTwo(time.getMinutes())}:${makeTwo(time.getSeconds())}`;
+if (displayData.userScore.duration.indexOf('59:59')>=0)
+{
+  resultMessage.innerText = 'Better luck next time';
+  outcomeIcon.src= './wrongIcon.svg';
+}

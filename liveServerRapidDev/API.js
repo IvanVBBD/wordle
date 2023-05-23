@@ -38,7 +38,7 @@ export async function postUserData(time) {
       // Add any other required headers
     },
     body: JSON.stringify({
-      duration: (time.length > 5) ? '99:99:99' : `00:${time}`
+      duration: (time.length > 5) ? '23:59:59' : `00:${time}`
     }) // Replace 'data' with your actual request payload
   })
     .then(() => {
@@ -56,13 +56,6 @@ export async function getHighScore(){
   if (UIConstants.APILocalMode === true)
     return {
       'highScores': [
-        {
-          'event_id': 116,
-          'user_id': 7,
-          'user_email': 'lolMail@gmail.com',
-          'word': 'panda',
-          'duration': '1970-01-01T00:00:06.000Z'
-        },
         {
           'event_id': 116,
           'user_id': 8,
@@ -104,7 +97,7 @@ export async function getHighScore(){
         'user_id': 7,
         'user_email': 'lolMail@gmail.com',
         'word': 'panda',
-        'duration': '1970-01-01T00:00:06.000Z'
+        'duration': '1970-01-01T23:59:59.000Z'
       },
       'userRank': {
         'UserAbove': 0
