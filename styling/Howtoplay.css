@@ -1,14 +1,53 @@
 :root{
     --displaceSize: 1vh;
   }
+body {
+  display: flex;
+  color: #f6ffff;
+}
 
 main{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 40vh;
+    margin: 3vh;
+
   }
+
+ h1 {
+  text-align: center;
+    font-size: x-large;
+    margin: 5%;
+    color: #000;
+
+  }
+
+  h2{
+    text-align: left;
+    font-size:large;
+    margin: 4px;
+    color: #000;
+  }
+
+  li {
+    text-align: left;
+    font-size: small;
+    font-weight: 100;
+    color: #000;
+  }
+
+  p {
+    text-align: center;
+    font-size:medium;
+    font-weight: 100;
+    color: #000;
+  }
+
+.visual-instructions {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
 
 .green-box {
     display: flex;
@@ -20,6 +59,7 @@ main{
     border-radius: 7px;
     margin: 2px;
     font-size: 2em;
+    border: #000 solid 1px;
   }
 
   .yellow-box {
@@ -32,6 +72,7 @@ main{
     border-radius: 7px;
     margin: 2px;
     font-size: 2em;
+    border: #000 solid 1px;
   }
 
   .gray-box {
@@ -44,6 +85,7 @@ main{
     border-radius: 7px;
     margin: 2px;
     font-size: 2em;
+    border: #000 solid 1px;
   }
 
   .box {
@@ -56,6 +98,8 @@ main{
     border-radius: 7px;
     margin: 2px;
     font-size: 2em;
+    border: 10px;
+    border: #000 solid 1px;
   }
   
   .boxes {
@@ -71,4 +115,22 @@ main{
     width: 40vw;
     aspect-ratio: 0.2;
     stroke-dashoffset: 0;
+  }
+  
+  .play-button {
+    justify-content: center;
+    padding: 3%;
+    padding-left: 10%;
+    padding-right: 10%;
+    border-radius: 20px;
+    background-color: #109999;
+    color: #ffffff;
+    border: 0px;
+    margin: 5%;
+    font-size: large;
+  }
+
+  #playbutton {
+    display: flex;
+    justify-content: center;
   }
