@@ -52,7 +52,7 @@ async function getUserRank(userID){
   try{
     const userScoreQuery = `SELECT COUNT(duration) AS [UserAbove] FROM EVENTRESPONSES
     INNER JOIN EVENTS ON EVENTRESPONSES.event_id = EVENTS.event_id
-    WHERE EVENTS.ACTIVE = 1 AND EVENTRESPONSES.duration > (
+    WHERE EVENTS.ACTIVE = 1 AND EVENTRESPONSES.duration < (
       SELECT EVENTRESPONSES.duration FROM EVENTRESPONSES
       INNER JOIN EVENTS ON EVENTRESPONSES.event_id = EVENTS.event_id
       WHERE EVENTS.ACTIVE = 1 AND EVENTRESPONSES.user_id = ${userID}
