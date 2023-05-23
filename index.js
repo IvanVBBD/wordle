@@ -6,6 +6,7 @@ const authRoute = require('./routes/authRoute');
 const session = require('express-session');
 const passport = require('passport');
 const highscoreRoute = require('./routes/highScoreRoute');
+const howToPlayRoute = require('./routes/howToPlayRoute');
 const word = require('./routes/Utility/wordUtils');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const http = require('http');
@@ -75,6 +76,7 @@ app.use(express.static('images'));
 app.use('/Game', gameRoute);
 app.use('/Auth', authRoute);
 app.use('/Highscore', highscoreRoute);
+app.use('/HowToPlay', howToPlayRoute);
 
 const millisecondsIn24Hours = 24 * 60 * 60 * 1000;
 word.createNewEvent();
