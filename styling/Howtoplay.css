@@ -1,0 +1,20 @@
+.green-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    aspect-ratio: 1;
+    background: #53E485;
+    border-radius: 7px;
+    margin: 2px;
+    font-size: 2em;
+  }
+  
+  .boxes {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5vw;
+    margin: 1vh 1vw;
+  }
