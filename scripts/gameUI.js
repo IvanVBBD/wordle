@@ -219,6 +219,7 @@ async function enterClick(){
   compDataState.guessUsed++;
   const loc = gridIndexToCord();
   const wasCorrect = checkEnteredValue(compDataState.correctWord,loc[1]);
+  gameUIManager.updateUIState(UIIDList.validityIndicator,UIConstants.validityIndicator.invalidColor);
   if (!wasCorrect && (compDataState.guessUsed < UIConstants.gridSize.value ))
   {
     bumpGridIndex(true);
@@ -227,7 +228,6 @@ async function enterClick(){
 
   clearInterval(compDataState.intervalStorage);
   compDataState.canUseEnter = false;
-
   gameUIManager.updateUIState(UIIDList.enterButton,resolveEnterBackgroundColor());
   if (compDataState.guessUsed == UIConstants.gridSize.value){
     await postUserData('UserFailedNoMoreGuesses');
