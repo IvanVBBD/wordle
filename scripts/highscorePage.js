@@ -70,6 +70,8 @@ for (let i = Math.min(displayData.highScores.length,5); i <  5  ;i++){
   `;
 }
 
+let time = new Date(displayData.userScore.duration);
+
 innerHTML +=`
 <tr id="userRow">
   <td>${displayData.userRank.UserAbove+1}</td>
