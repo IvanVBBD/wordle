@@ -96,6 +96,7 @@ const UIConstants = {
     /** @type {number} */
     value: 5
   },
+
   gridSelectedClass:{
     /** @type {string} */
     className:'currentlySelected',
@@ -105,6 +106,12 @@ const UIConstants = {
     darkModeValue:1.6,
     /** @type {string} */
     varName: '--brightnessValue'
+  },
+
+  validityIndicator:{
+    validColor: '#36a336',
+    invalidColor: '#c8891b',
+    varName: '--validityBGCol'
   },
   APILocalMode: false,
 };
@@ -130,6 +137,8 @@ const UIIDList ={
   mainEnterButton: 'enterButton',
   /**@type {string} */
   buttonBackSpace: 'buttonBackSpace',
+  /**@type {string} */
+  validityIndicator:'validIndicator'
 };
 
 export {UIConstants, UIIDList};

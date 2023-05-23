@@ -19,7 +19,7 @@ export default function generateInputGrid(UITree,gameUIManager,MountTarget){
     for (let c = 0; c < UIConstants.gridSize.value; c++)
     {
       HTMLOut += `
-        <div class="gridItem smallRound" id="R${r}C${c}"><p></p></div>
+        <p class="gridItem smallRound" id="R${r}C${c}"></p>
       `;
       gridDODList.push( new UIHelpers.DOD(`R${r}C${c}`,undefined,undefined,undefined) );
     }
@@ -40,9 +40,9 @@ function gridElementUpdate(updateInfo){
   /** @type {HTMLElement} */
   const self = document.getElementById(`${updateInfo.ID}`);
   /** @type {HTMLElement} */
-  const text =  document.querySelector(`#${updateInfo.ID} p`);
+  // const text =  document.querySelector(`#${updateInfo.ID} p`);
   
   self.classList.add(updateInfo.colorState);
   
-  text.innerHTML = updateInfo.letterValue;
+  self.innerHTML = updateInfo.letterValue;
 }

@@ -38,7 +38,7 @@ export async function postUserData(time) {
       // Add any other required headers
     },
     body: JSON.stringify({
-      duration: (time.length > 5) ? '99:99:99' : `00:${time}`
+      duration: (time.length > 5) ? '99:00:00' : `00:${time}`
     }) // Replace 'data' with your actual request payload
   })
     .then(() => {
