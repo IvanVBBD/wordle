@@ -210,3 +210,7 @@ tr td:nth-child(3) {
 table{
   background-color: red;
 }
+
+body{
+  background-color: var(--plainBackground);
+}

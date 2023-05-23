@@ -44,6 +44,12 @@ svg{
   animation: hideshow 2s ease, svgDropIn 2s ease;
 }
 
+body{
+  background-color: var(--plainBackground);
+  background-color: #232323;
+  color: var(--defaultFont);
+}
+
 @keyframes hideshow {
   0% {
     opacity: 0;

@@ -9,6 +9,7 @@
 }
 
 body{
+  background-color: var(--plainBackground);
   background-color: #232323;
   color: var(--defaultFont);
 }

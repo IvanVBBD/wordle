@@ -113,7 +113,6 @@ const UIConstants = {
     invalidColor: '#c8891b',
     varName: '--validityBGCol'
   },
-
   APILocalMode: false,
 };
 
