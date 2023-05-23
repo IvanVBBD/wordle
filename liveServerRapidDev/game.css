@@ -5,6 +5,7 @@
   --backspaceIcon: url("backspaceIconLightMode.svg");
   --brightnessValue: 0.8;
   --gridSize: 5;
+  --validityBGCol: #c8891b;
 }
 
 body{
@@ -16,7 +17,7 @@ body{
   background-color: var(--bigBackground);
   aspect-ratio: 0.5;
   display: grid;
-  grid-template-rows: 2fr 1fr 7fr 1.5fr 4fr;
+  grid-template-rows: 1.5fr 1.5fr 7fr 1.5fr 4fr;
   margin: 1vw;
   grid-template-columns: 2fr 8fr 2fr;
   max-height: 98vh;
@@ -62,6 +63,9 @@ h1 {
   grid-row: 2;
   text-align: center;
   color: var(--timerFontColor);
+  width: fit-content;
+  height:  fit-content;
+  margin: auto;
 }
 
 #displayBoard{
@@ -148,6 +152,23 @@ key-button{
 
 .currentlySelected {
   filter: brightness(var(--brightnessValue));
+}
+
+#validIndicator{
+  aspect-ratio: 1/1;
+  grid-row: 2;
+  grid-column: 3;
+  width: 100%;
+  /* background-color: rebeccapurple; */
+  margin: auto; 
+}
+
+circle{
+  r: 25%;
+  cy: 50%;
+  cx: 26%;
+  fill: var(--validityBGCol);
+  stroke: var(--defaultFont);
 }
 
  @media only screen and (max-width: 600px) {
