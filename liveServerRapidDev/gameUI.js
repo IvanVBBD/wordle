@@ -229,7 +229,8 @@ async function enterClick(){
   clearInterval(compDataState.intervalStorage);
   compDataState.canUseEnter = false;
   gameUIManager.updateUIState(UIIDList.enterButton,resolveEnterBackgroundColor());
-  if (compDataState.guessUsed == UIConstants.gridSize.value){
+  if (compDataState.guessUsed == UIConstants.gridSize.value && !wasCorrect){
+    console.log('BetterLuckNextTime');
     await postUserData('UserFailedNoMoreGuesses');
   }
   else
